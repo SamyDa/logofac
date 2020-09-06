@@ -10,10 +10,13 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 public class LogoFacApplication implements CommandLineRunner{
 	
 	private InitialLoad initialLoad;
+	private  DocumentProcess documentProcess;
 
-	public LogoFacApplication(InitialLoad initialLoad) {
+
+	public LogoFacApplication(InitialLoad initialLoad, DocumentProcess documentProcess) {
 		super();
 		this.initialLoad = initialLoad;
+		this.documentProcess = documentProcess;
 	}
 
 	public static void main(String[] args) {
@@ -24,6 +27,7 @@ public class LogoFacApplication implements CommandLineRunner{
 	public void run(String... args) {
 		
 		initialLoad.initialLoad();
+		documentProcess.loadDocumentData();
 	}
 
 }
