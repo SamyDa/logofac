@@ -14,6 +14,8 @@ import be.logofac.LogoFac.domain.Patient;
 import be.logofac.LogoFac.domain.Prix;
 import be.logofac.LogoFac.domain.Professionnel;
 import be.logofac.LogoFac.domain.Seance;
+import be.logofac.LogoFac.domain.enums.SeanceDuration;
+import be.logofac.LogoFac.domain.enums.SeanceType;
 import be.logofac.LogoFac.service.AdresseService;
 import be.logofac.LogoFac.service.FactureService;
 import be.logofac.LogoFac.service.PatientService;
@@ -88,7 +90,8 @@ public class InitialLoad {
 		if(patient.isPresent()) {
 			Optional<Professionnel> professionnel = professionnelService.findAllPro().stream().findFirst();
 			if (professionnel.isPresent()) {
-				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2020, 12, 1), LocalTime.of(14, 30)), 0.5);
+				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2020, 12, 1), LocalTime.of(14, 30)), SeanceDuration.demi_heure, SeanceType.Cabinet
+						);
 	   			seanceService.save(seance);
 				seanceService.findAllSeance().forEach(n -> System.out.println(n.toString()));
 			}

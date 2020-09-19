@@ -2,6 +2,10 @@ package be.logofac.LogoFac;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,10 @@ import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Patient;
 import be.logofac.LogoFac.domain.Professionnel;
 import be.logofac.LogoFac.domain.Seance;
+import be.logofac.LogoFac.domain.enums.Description;
+import be.logofac.LogoFac.domain.enums.Mois;
+import be.logofac.LogoFac.domain.enums.SeanceDuration;
+import be.logofac.LogoFac.domain.enums.SeanceType;
 import be.logofac.LogoFac.service.AdresseService;
 import be.logofac.LogoFac.service.FactureService;
 import be.logofac.LogoFac.service.PatientService;
@@ -77,9 +85,62 @@ public class DocumentProcess {
 	private void addDetailedTable(Document document, Facture facture) {
 		float [] pointColumnWidths = {300F, 300F};   
 		Table table = new Table(pointColumnWidths);
-		table.addHeaderCell(getCell("  Description", TextAlignment.CENTER).setBold().setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
-		table.addHeaderCell(getCell("  Montant", TextAlignment.CENTER).setBold().setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
+		table.addHeaderCell(getCell("  Description", TextAlignment.CENTER).setBold().setFontSize(14).setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
+		table.addHeaderCell(getCell("  Montant", TextAlignment.CENTER).setBold().setFontSize(14).setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
+		table.addCell(getDescriptionCell(facture));
+		table.addCell(getAmountCell(facture));
 		document.add(table);
+	}
+
+	private Cell getAmountCell(Facture facture) {
+		Cell cell = new Cell();
+		
+		return cell;
+	}
+
+	private Cell getDescriptionCell(Facture facture) {
+		Cell cell = new Cell();
+		Mois moisFacture = null ;
+		
+		for (Mois mois : Mois.values())
+		{
+			if(mois.checkMois(facture.getCreationDate().getMonthValue())) {
+				moisFacture = mois;
+				break;
+			}
+		}
+		cell.add(new Paragraph().add( new Text(Description.Honoraires.getDescription(moisFacture) + "\n\n")));
+		
+		String text = "";
+		//Need to separate the description between hours and 
+		
+		for(SeanceDuration seanceDuration : SeanceDuration.values()) {
+			
+			List<Seance> filteredSeances = facture.getSeances().stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
+			
+			for(SeanceType seanceType :  SeanceType.values()) {
+				List<Seance> secondFilteredSeances = facture.getSeances().stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
+				if(secondFilteredSeances.size() > 0 ) {
+					if(secondFilteredSeances.size() == 1) {
+						String duration = "";
+						if (seanceDuration.getDescrption().toLowerCase().toCharArray()[0] == 'u') 
+							duration = "d'" + seanceDuration.getDescrption();
+						else
+							duration = "de " + seanceDuration.getDescrption();
+						text = 	"1 séance " + duration + " " + seanceType.getSeanceString() + "\n";
+					}
+					else
+					{
+						text = secondFilteredSeances.size() + " séances " + seanceDuration.getDescrption() + " " + seanceType.getSeanceString() + "\n";
+					}
+				}
+			}
+			
+		}
+		
+		cell.add(new Paragraph().add(new Text(text)));
+		
+		return cell;
 	}
 
 	private void addBreakLine(Document document) {

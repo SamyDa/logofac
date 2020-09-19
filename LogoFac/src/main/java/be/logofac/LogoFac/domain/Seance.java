@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import be.logofac.LogoFac.domain.enums.SeanceDuration;
+import be.logofac.LogoFac.domain.enums.SeanceType;
+
 @Entity
 public class Seance {
 	@Id
@@ -24,7 +27,8 @@ public class Seance {
 
 	private LocalDateTime hourFrom;
 	
-	private double hourNumber;
+	private SeanceDuration hourNumber;
+	private SeanceType seanceType;
 
 	
 	public Seance() {
@@ -32,20 +36,15 @@ public class Seance {
 	}
 
 
-
-
-
-
-	public Seance(Patient patient, Professionnel professionnel, LocalDateTime hourFrom, double hourNumber) {
+	public Seance(Patient patient, Professionnel professionnel, LocalDateTime hourFrom, SeanceDuration hourNumber,
+			SeanceType seanceType) {
 		super();
 		this.patient = patient;
 		this.professionnel = professionnel;
 		this.hourFrom = hourFrom;
 		this.hourNumber = hourNumber;
+		this.seanceType = seanceType;
 	}
-
-
-
 
 
 	@Override
@@ -55,14 +54,9 @@ public class Seance {
 	}
 
 
-
-
-
-
 	public int getSeanceId() {
 		return seanceId;
 	}
-
 
 
 	public void setSeanceId(int seanceId) {
@@ -94,17 +88,14 @@ public class Seance {
 	}
 
 
-
-	public double getHourNumber() {
+	public SeanceDuration getHourNumber() {
 		return hourNumber;
 	}
 
 
-
-	public void setHourNumber(double hourNumber) {
+	public void setHourNumber(SeanceDuration hourNumber) {
 		this.hourNumber = hourNumber;
 	}
-
 
 
 	public Professionnel getProfessionnel() {
@@ -114,9 +105,15 @@ public class Seance {
 
 	public void setProfessionnel(Professionnel professionnel) {
 		this.professionnel = professionnel;
+	}
+
+	public SeanceType getSeanceType() {
+		return seanceType;
+	}
+
+	public void setSeanceType(SeanceType seanceType) {
+		this.seanceType = seanceType;
 	} 
-	
-	
 	
 	
 }
