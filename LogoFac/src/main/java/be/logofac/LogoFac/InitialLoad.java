@@ -56,22 +56,24 @@ public class InitialLoad {
 	
 	private void fillFacture() {
 		Patient patient = new Patient();
-		
+		Professionnel professionel = null;
 		if(patientService.findAll().stream().findFirst().isPresent())
 			patient = patientService.findAll().stream().findFirst().get();
+		if(professionnelService.findAllPro().stream().findFirst().isPresent())
+			professionel = professionnelService.findAllPro().stream().findFirst().get();
 		ArrayList<Seance> seances = new ArrayList<Seance>();
 		seanceService.findAllSeance().forEach(n -> seances.add(n));
-		Facture facture = new Facture( "Reference", patient, "Communication ", seances);
+		Facture facture = new Facture( "Reference",  false , patient, professionel,"Communication ", LocalDate.now(), seances);
 		
 		factureService.save(facture);
 		
-		factureService.findAll().forEach(n-> {System.out.println(n.toString());});
+		factureService.findAllFetched().forEach(n-> {System.out.println(n.toString());});
 		
 	}
 
 	private void fillProfessionnal() {
 		Adresse adresse = new Adresse( "Rue des testers ", "Tester city", "1A", 7500, "Tester Land"); 
-		Professionnel pro = new Professionnel( "Test", "TesterName", "BCE number", adresse, "Testeur", "+32testr", "tester@testr.com", "Inami tester", "BE TESTER", "BIC Tester");
+		Professionnel pro = new Professionnel( "Test", "TesterName", "BCE number", adresse, "Testeur", "+32488182809", "tester@testr.com", "Inami tester", "BE TESTER", "BIC Tester");
 		professionnelService.save(pro);
 		
 		professionnelService.findAllPro().forEach(n -> System.out.println(n.toString()));
@@ -84,9 +86,12 @@ public class InitialLoad {
 		
 		Optional <Patient> patient = patientService.findAll().stream().findFirst();
 		if(patient.isPresent()) {
-			Seance seance = new Seance( patient.get(), LocalDateTime.of(LocalDate.of(2020, 12, 1), LocalTime.of(14, 30)), 0.5);
-   			seanceService.save(seance);
-			seanceService.findAllSeance().forEach(n -> System.out.println(n.toString()));
+			Optional<Professionnel> professionnel = professionnelService.findAllPro().stream().findFirst();
+			if (professionnel.isPresent()) {
+				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2020, 12, 1), LocalTime.of(14, 30)), 0.5);
+	   			seanceService.save(seance);
+				seanceService.findAllSeance().forEach(n -> System.out.println(n.toString()));
+			}
 		}
 	}
 

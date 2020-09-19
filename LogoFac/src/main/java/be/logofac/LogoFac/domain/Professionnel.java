@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Professionnel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int professionnelId;
 
 	private String firstName;

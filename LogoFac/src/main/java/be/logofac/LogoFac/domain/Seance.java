@@ -12,12 +12,15 @@ import javax.persistence.OneToOne;
 @Entity
 public class Seance {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int seanceId;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_patient")
 	private Patient patient;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_professionnel")
+	private Professionnel professionnel;
 
 	private LocalDateTime hourFrom;
 	
@@ -30,20 +33,29 @@ public class Seance {
 
 
 
-	public Seance( Patient patient, LocalDateTime hourFrom, double hourNumber) {
+
+
+
+	public Seance(Patient patient, Professionnel professionnel, LocalDateTime hourFrom, double hourNumber) {
 		super();
 		this.patient = patient;
+		this.professionnel = professionnel;
 		this.hourFrom = hourFrom;
 		this.hourNumber = hourNumber;
 	}
 
 
 
+
+
 	@Override
 	public String toString() {
-		return "Seance [seanceId=" + seanceId + ", patient=" + patient.toString() + ", hourFrom=" + hourFrom + ", hourNumber="
-				+ hourNumber + "]";
+		return "Seance [seanceId=" + seanceId + ", patient=" + patient + ", professionnel=" + professionnel
+				+ ", hourFrom=" + hourFrom + ", hourNumber=" + hourNumber + "]";
 	}
+
+
+
 
 
 
@@ -91,6 +103,17 @@ public class Seance {
 
 	public void setHourNumber(double hourNumber) {
 		this.hourNumber = hourNumber;
+	}
+
+
+
+	public Professionnel getProfessionnel() {
+		return professionnel;
+	}
+
+
+	public void setProfessionnel(Professionnel professionnel) {
+		this.professionnel = professionnel;
 	} 
 	
 	

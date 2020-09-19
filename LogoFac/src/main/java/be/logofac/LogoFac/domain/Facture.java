@@ -1,4 +1,5 @@
 package be.logofac.LogoFac.domain;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,31 +18,40 @@ import javax.persistence.OneToOne;
 @Entity
 public class Facture {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int factureId;
 	@Column(unique =  true)
 	private String reference;
 	
+	private boolean printed = false;
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	private Patient patient;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	private Professionnel professionnel;
+	
 	private String communication;
+	
+	private LocalDate applicationDate;
 	
 	@OneToMany(fetch = FetchType.EAGER )
 	@JoinTable( name = "jnd_FactSeance" , joinColumns = @JoinColumn(name = "facture_fk") ,inverseJoinColumns = @JoinColumn( name = "seance_fk") )
 	private List<Seance> seances;
-
-	
 	
 	public Facture() {
 		super();
 	}
 
-	public Facture(String reference, Patient patient, String communication, List<Seance> seances) {
+	public Facture(String reference, boolean printed, Patient patient, Professionnel professionnel,
+			String communication, LocalDate creationDate, List<Seance> seances) {
 		super();
 		this.reference = reference;
+		this.printed = printed;
 		this.patient = patient;
+		this.professionnel = professionnel;
 		this.communication = communication;
+		this.applicationDate = creationDate;
 		this.seances = seances;
 	}
 
@@ -89,6 +99,44 @@ public class Facture {
 
 	public void setSeances(List<Seance> seances) {
 		this.seances = seances;
+	}
+
+
+	public Professionnel getProfessionnel() {
+		return professionnel;
+	}
+
+
+	public void setProfessionnel(Professionnel professionnel) {
+		this.professionnel = professionnel;
+	}
+
+
+	public boolean isPrinted() {
+		return printed;
+	}
+
+	
+
+	public LocalDate getCreationDate() {
+		return applicationDate;
+	}
+
+	public void setCreationDate(LocalDate creationDate) {
+		this.applicationDate = creationDate;
+	}
+
+
+	public void setPrinted(boolean printed) {
+		this.printed = printed;
+	}
+
+	public LocalDate getApplicationDate() {
+		return applicationDate;
+	}
+
+	public void setApplicationDate(LocalDate applicationDate) {
+		this.applicationDate = applicationDate;
 	}
 	
 	

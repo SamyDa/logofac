@@ -1,5 +1,6 @@
 package be.logofac.LogoFac.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,15 +15,14 @@ public class FactureService {
 	
 	private FactureRepository factureRepository;
 	private PatientService patientService;
-	private SeanceService seanceService;
+	private ProfessionnelService professionnelService;
+	 
 
-
-	public FactureService(FactureRepository factureRepository, PatientService patientService,
-			SeanceService seanceService) {
+	public FactureService(FactureRepository factureRepository, PatientService patientService, ProfessionnelService professionnelService) {
 		super();
 		this.factureRepository = factureRepository;
 		this.patientService = patientService;
-		this.seanceService = seanceService;
+		this.professionnelService = professionnelService;
 	}
 
 	public void save(Facture facture) {
@@ -30,14 +30,29 @@ public class FactureService {
 	}
 
 	public List<Facture> findAll() {
-		List<Facture> factures = factureRepository.findAll();
-		//Fetch the patient in seance and the adress in Patient
-		factures.forEach(n -> {
-					patientService.fetchLazy(n.getPatient());
-					n.getSeances().forEach(x -> seanceService.fetchLazyAtributes(x));	
-					
-		});
+		return factureRepository.findAll();
+	}
+
+	public List<Facture> findAllFetched() {
+		List<Facture> factures = findAll();
+		//Fetch the patient and the professional
+		factures.forEach(n ->fetchLazyAttributes(n));
 		return factures;
 	}
+	
+	public void fetchLazyAttributes(Facture facture) {
+		patientService.fetchLazy(facture.getPatient());
+		professionnelService.fetchLazy(facture.getProfessionnel());
+		//no need to fetch the lazy seances --> fetch when needed
+		//facture.getSeances().forEach(x -> seanceService.fetchLazyAtributes(x));
+	}
+	
+
+	public int countInvoiceInTime(LocalDate beginDate, LocalDate endDate) {
+
+		return factureRepository.countInTime(beginDate , endDate);
+		
+	}
+	
 
 }

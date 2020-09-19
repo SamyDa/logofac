@@ -12,10 +12,10 @@ import be.logofac.LogoFac.domain.Seance;
 
 public interface SeanceRepository extends JpaRepository<Seance, Integer>{
 
-	@Query("SELECT S FROM Seance S JOIN FETCH S.patient P JOIN FETCH P.adresse")
+	@Query("SELECT S FROM Seance S INNER JOIN FETCH S.patient P INNER JOIN FETCH S.professionnel Pro INNER JOIN FETCH P.adresse INNER JOIN FETCH Pro.adresse  ")
 	List<Seance> findAllAndPatient();
 
-	@Query("SELECT S FROM Seance S JOIN FETCH S.patient P JOIN FETCH P.adresse WHERE S.seanceId = :id")
+	@Query("SELECT S FROM Seance S INNER JOIN FETCH S.patient P INNER JOIN FETCH S.professionnel Pro INNER JOIN FETCH P.adresse INNER JOIN FETCH Pro.adresse WHERE S.seanceId = :id")
 	Seance fetchById(@Param("id")  int seanceId);
 	
 	

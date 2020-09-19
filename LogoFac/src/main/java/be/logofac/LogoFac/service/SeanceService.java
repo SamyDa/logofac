@@ -31,6 +31,7 @@ public class SeanceService {
 		//first fetch the patient then fetch the address of the Patient
 		Seance fetchedSeance = seanceRepository.fetchById(seance.getSeanceId());
 		seance.setPatient(fetchedSeance.getPatient());
+		seance.setProfessionnel(fetchedSeance.getProfessionnel());
 	}
 
 }

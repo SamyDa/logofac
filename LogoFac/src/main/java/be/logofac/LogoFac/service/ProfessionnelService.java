@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import be.logofac.LogoFac.domain.Patient;
 import be.logofac.LogoFac.domain.Professionnel;
 import be.logofac.LogoFac.repository.ProfessionnelRepository;
 
@@ -29,6 +30,12 @@ public class ProfessionnelService {
 
 	public List<Professionnel> findAllPro() {
 		return professionnelRepository.findAllAndAdress();
+	}
+
+	public void fetchLazy(Professionnel professionnel) {
+		Professionnel fetchedPro  = professionnelRepository.fetchByid(professionnel.getProfessionnelId());
+		professionnel.setAdresse(fetchedPro.getAdresse());
+		
 	}
 	
 	
