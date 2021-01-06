@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="542.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="143.0" layoutY="47.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="251.0" text="Ajouter un rdv" />
+      <Button layoutX="143.0" layoutY="197.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="251.0" text="Créer une facture" />
+      <Button layoutX="143.0" layoutY="347.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="251.0" text="Gérer les données" />
+   </children>
+</AnchorPane>

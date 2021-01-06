@@ -13,6 +13,7 @@ import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Seance;
 import be.logofac.LogoFac.service.FactureService;
 import be.logofac.LogoFac.service.SeanceService;
+import javafx.stage.Stage;
 
 @SpringBootApplication(exclude = { ErrorMvcAutoConfiguration.class, SecurityAutoConfiguration.class })
 public class LogoFacApplication implements CommandLineRunner{
@@ -20,13 +21,18 @@ public class LogoFacApplication implements CommandLineRunner{
 	private InitialLoad initialLoad;
 	private  DocumentProcess documentProcess;
 	private FactureService factureService;
+	private FrontApp app;
 
 	
-	public LogoFacApplication(InitialLoad initialLoad, DocumentProcess documentProcess, FactureService factureService) {
+	
+
+	public LogoFacApplication(InitialLoad initialLoad, DocumentProcess documentProcess, FactureService factureService,
+			FrontApp app) {
 		super();
 		this.initialLoad = initialLoad;
 		this.documentProcess = documentProcess;
 		this.factureService = factureService;
+		this.app = app;
 	}
 
 	public static void main(String[] args) {
@@ -36,7 +42,7 @@ public class LogoFacApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) {
 		//testDocument.createDocument();
-		initialLoad.initialLoad();
+		//initialLoad.initialLoad();
 		Optional<Facture> facture = factureService.findAllFetched().stream().findFirst();
 		if(facture.isPresent())
 		{
@@ -48,6 +54,13 @@ public class LogoFacApplication implements CommandLineRunner{
 		beginDate = LocalDate.of(2019, 1, 1);
 		endDate = LocalDate.of(2019, 12, 31);
 		System.out.println("Count invoice 2019 = " + factureService.countInvoiceInTime(beginDate , endDate));
-	}
+		
+		new Thread(){
+            public void run() {
+                app.main(new String[]{});}
+                }.start();
+    	}
+		
+	
 
 }
