@@ -2,6 +2,7 @@ package be.logofac.LogoFac;
 
 import org.springframework.stereotype.Service;
 
+import be.logofac.LogoFac.views.MainPane;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,21 +32,9 @@ public class FrontApp extends Application {
 	
 	private void initRootLayout() {
 		
-		try {
-			 // Load root layout from fxml file.
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			//System.out.println("Location -> " + MainApp.class.getResource("views/RootLayout.fxml"));
-			
-			fxmlLoader.setLocation( this.getClass().getResource("/views/RootLayout.fxml"));
-			rootLayout = (BorderPane) fxmlLoader.load();
-			
-			 // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            
-		} catch (Exception e) {
-			 e.printStackTrace();
-		} 
+		MainPane mainPane = new MainPane(primaryStage , rootLayout, null);
+		
+
+		
 	}
 }
