@@ -28,7 +28,7 @@ public abstract class NavigationPane {
 		this.parentPane = parentPane;
 		this.primaryStage = parentPane.getPrimaryStage();
 		this.rootLayout = parentPane.getRootLayout();
-		
+		showPane();
 	}
 
 	public NavigationPane currentPane() {
@@ -65,6 +65,10 @@ public abstract class NavigationPane {
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
+	}
+
+	public void setNavigatedPane(NavigationPane navigatedPane) {
+		this.navigatedPane = navigatedPane;
 	}
 	
 	

@@ -34,7 +34,5 @@ public class FrontApp extends Application {
 		
 		MainPane mainPane = new MainPane(primaryStage , rootLayout, null);
 		
-
-		
 	}
 }
