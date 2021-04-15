@@ -19,5 +19,9 @@ public interface SeanceRepository extends JpaRepository<Seance, Integer>{
 	Seance fetchById(@Param("id")  int seanceId);
 	
 	
+	@Query("SELECT S FROM Seance S INNER JOIN FETCH S.patient P INNER JOIN FETCH S.professionnel Pro INNER JOIN FETCH P.adresse INNER JOIN FETCH Pro.adresse WHERE P.patientId = :id")
+	List<Seance> fetchByPatientId(@Param("id")  int seanceId);
+	
+	
 
 }

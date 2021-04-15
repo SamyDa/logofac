@@ -13,5 +13,8 @@ public interface FactureRepository extends JpaRepository<Facture, Integer>{
 
 	@Query("SELECT COUNT(F) FROM Facture F WHERE applicationDate  >= :beginDate AND applicationDate  <= :endDate")
 	int countInTime(@Param("beginDate") LocalDate beginDate, @Param("endDate")LocalDate endDate);
+	
+	@Query("SELECT COUNT(F) FROM Facture F join  F.seances S  WHERE S.seanceId = :id ")
+	int countSeance(@Param("id")int seanceId);
 
 }

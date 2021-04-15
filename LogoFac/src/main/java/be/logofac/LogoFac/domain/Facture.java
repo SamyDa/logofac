@@ -138,6 +138,11 @@ public class Facture {
 	public void setApplicationDate(LocalDate applicationDate) {
 		this.applicationDate = applicationDate;
 	}
+
+	public static String createReference(int year, int invoiceCount) {
+		// TODO Auto-generated method stub
+		return year + "-" + invoiceCount;
+	}
 	
 	
 }

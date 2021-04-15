@@ -3,14 +3,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="542.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.FirstMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.FirstMenuController">
    <children>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
             <Button layoutX="154.0" layoutY="43.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="75.0" prefWidth="251.0" text="Ajouter un rdv" />
-            <Button layoutX="154.0" layoutY="264.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="251.0" text="Créer une facture" />
+            <Button layoutX="154.0" layoutY="264.0" mnemonicParsing="false" onAction="#createInvoice" prefHeight="75.0" prefWidth="251.0" text="Créer une facture" />
             <Button layoutX="154.0" layoutY="404.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="251.0" text="Gestion les données" />
-            <Button layoutX="154.0" layoutY="148.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="75.0" prefWidth="251.0" text="Consulter les rdv" />
+            <Button layoutX="154.0" layoutY="148.0" mnemonicParsing="false" onAction="#consultAppointment" prefHeight="75.0" prefWidth="251.0" text="Consulter les rdv" />
          </children>
       </AnchorPane>
    </children>

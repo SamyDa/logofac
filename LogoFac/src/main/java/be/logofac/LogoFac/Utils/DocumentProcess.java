@@ -1,7 +1,9 @@
-package be.logofac.LogoFac;
+package be.logofac.LogoFac.Utils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +52,7 @@ public class DocumentProcess {
 	}
 
 	private void createDocument(Facture facture) {
-	    String dest = "Invoice.pdf";     
+	    String dest = facture.getReference() + ".pdf";     
 	    
 		try {
 			 PdfWriter writer = new PdfWriter(dest);
@@ -94,7 +96,9 @@ public class DocumentProcess {
 
 	private Cell getAmountCell(Facture facture) {
 		Cell cell = new Cell();
+		String text = "";
 		
+		cell.add(new Paragraph().add(new Text(text)));
 		return cell;
 	}
 
@@ -119,7 +123,7 @@ public class DocumentProcess {
 			List<Seance> filteredSeances = facture.getSeances().stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
 			
 			for(SeanceType seanceType :  SeanceType.values()) {
-				List<Seance> secondFilteredSeances = facture.getSeances().stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
+				List<Seance> secondFilteredSeances = filteredSeances.stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
 				if(secondFilteredSeances.size() > 0 ) {
 					if(secondFilteredSeances.size() == 1) {
 						String duration = "";
@@ -127,12 +131,14 @@ public class DocumentProcess {
 							duration = "d'" + seanceDuration.getDescrption();
 						else
 							duration = "de " + seanceDuration.getDescrption();
-						text = 	"1 séance " + duration + " " + seanceType.getSeanceString() + "\n";
+						text = 	"1 séance " + duration + " " + seanceType.getSeanceString() + "\n" ;
 					}
 					else
 					{
 						text = secondFilteredSeances.size() + " séances " + seanceDuration.getDescrption() + " " + seanceType.getSeanceString() + "\n";
 					}
+					
+					text = text + listSeanceDateText(secondFilteredSeances);
 				}
 			}
 			
@@ -141,6 +147,39 @@ public class DocumentProcess {
 		cell.add(new Paragraph().add(new Text(text)));
 		
 		return cell;
+	}
+
+	private String listSeanceDateText(List<Seance> seanceList) {
+
+		String text = "";
+		
+		if(seanceList.size()> 0) {
+			text = "(";
+			
+			if (seanceList.size()== 1)
+			{
+				text = text + seanceList.get(0).getHourFrom().format( DateTimeFormatter.ofPattern(" dd/MM "));
+			}
+			else {
+				for(int i = 0 ; i < seanceList.size() ; i++) {
+					
+					text = text + seanceList.get(i).getHourFrom().format( DateTimeFormatter.ofPattern(" dd/MM "));
+					
+					if(i < seanceList.size() -2) {
+						text = text + ',';
+					}else if (i < seanceList.size()-1)
+					{
+						text= text + "et";
+					}
+				}
+			}
+			
+			text = text + ")";
+		
+		}
+		return text;
+		
+		
 	}
 
 	private void addBreakLine(Document document) {

@@ -27,6 +27,11 @@ public class SeanceService {
 		return seanceRepository.findAllAndPatient();
 		
 	}
+	
+	public List<Seance> findAllByPatient(Patient patient){
+		
+		return seanceRepository.fetchByPatientId(patient.getPatientId());
+	}
 	public void fetchLazyAtributes(Seance seance) {
 		//first fetch the patient then fetch the address of the Patient
 		Seance fetchedSeance = seanceRepository.fetchById(seance.getSeanceId());

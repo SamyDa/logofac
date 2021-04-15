@@ -103,7 +103,8 @@ public class InitialLoad {
 		Adresse adresse = new Adresse("patient adresse", "Patient Service ", "11", 1000, "Patient Land");
 		Patient patient = new Patient("Pat", "ient", adresse);
 		patientService.save(patient);
-		
+		patient = new Patient("Patout", "rien", adresse);
+		patientService.save(patient);
 		patientService.findAll().forEach(n -> System.out.println(n.toString()) );
 		
 		

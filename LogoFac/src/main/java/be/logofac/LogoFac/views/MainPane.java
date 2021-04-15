@@ -1,7 +1,7 @@
 package be.logofac.LogoFac.views;
 
-import be.logofac.LogoFac.Controllers.FirstMenuController;
 import be.logofac.LogoFac.Controllers.ViewController;
+import be.logofac.LogoFac.Utils.CacheData;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -10,26 +10,22 @@ import javafx.stage.Stage;
 
 public class MainPane extends NavigationPane {
 
-	public MainPane( Stage primaryStage, BorderPane rootLayout, NavigationPane parentPane) {
-		super(primaryStage,rootLayout,parentPane);
+	public MainPane( Stage primaryStage, BorderPane rootLayout, NavigationPane parentPane, CacheData cacheData) {
+		super(primaryStage,rootLayout,parentPane, cacheData);
 	}
 
 
 	@Override
-	protected void showPane() {
+	protected void showInitialPane() {
 		
 		initializeRootLayout();
-		displayPersonHeader();
-		displayMainMenu();
+		showPane();
 	}
 
-
 	private void displayMainMenu() {
-
 		 // then display the first main menu
 		 try {
 			 	FXMLLoader fxmlLoader = new FXMLLoader();
-			 	
 			 	fxmlLoader.setLocation(this.getClass().getResource("/views/FirstMenu.fxml"));
 	            AnchorPane firstMenu = (AnchorPane) fxmlLoader.load();
 	            rootLayout.setCenter(firstMenu);
@@ -38,7 +34,6 @@ public class MainPane extends NavigationPane {
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
-		
 	}
 
 
@@ -50,9 +45,10 @@ public class MainPane extends NavigationPane {
 			 	fxmlLoader.setLocation(this.getClass().getResource("/views/HeaderPerson.fxml"));
 	            AnchorPane personHeader = (AnchorPane) fxmlLoader.load();
 	            rootLayout.setTop(personHeader);
-	            
 	            ViewController controller = fxmlLoader.getController();
+	            this.setHeaderController(controller);
 	            controller.setPane(this);
+	            controller.loadControllerLogic();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }		
@@ -75,7 +71,12 @@ public class MainPane extends NavigationPane {
 				} catch (Exception e) {
 					 e.printStackTrace();
 				} 
-		
 	}
-	
+
+	@Override
+	protected void showPane() {
+		displayPersonHeader();
+		displayMainMenu();
+	}
+
 }

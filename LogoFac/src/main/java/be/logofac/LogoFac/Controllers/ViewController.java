@@ -20,5 +20,11 @@ public abstract class ViewController {
 	@FXML
     private void initialize() {
     }
+	
+	public void loadControllerLogic() {
+		
+	}
  
+	
+	
 }

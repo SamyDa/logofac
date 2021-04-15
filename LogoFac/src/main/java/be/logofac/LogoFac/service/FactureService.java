@@ -40,6 +40,13 @@ public class FactureService {
 		return factures;
 	}
 	
+	public boolean isSeanceInvoiced(Seance seance) {
+		if(factureRepository.countSeance(seance.getSeanceId()) > 0)
+			return true;
+		else
+			return false;
+	}
+	
 	public void fetchLazyAttributes(Facture facture) {
 		patientService.fetchLazy(facture.getPatient());
 		professionnelService.fetchLazy(facture.getProfessionnel());
