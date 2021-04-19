@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import be.logofac.LogoFac.domain.Adresse;
+import be.logofac.LogoFac.domain.AppParameter;
+import be.logofac.LogoFac.domain.AppParameterAmount;
 import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Patient;
 import be.logofac.LogoFac.domain.Prix;
@@ -18,6 +20,7 @@ import be.logofac.LogoFac.domain.enums.SeanceDuration;
 import be.logofac.LogoFac.domain.enums.SeanceType;
 import be.logofac.LogoFac.service.AdresseService;
 import be.logofac.LogoFac.service.FactureService;
+import be.logofac.LogoFac.service.ParameterService;
 import be.logofac.LogoFac.service.PatientService;
 import be.logofac.LogoFac.service.PrixService;
 import be.logofac.LogoFac.service.ProfessionnelService;
@@ -31,6 +34,7 @@ public class InitialLoad {
 	private SeanceService seanceService;
 	private AdresseService adresseService;
 	private FactureService factureService;
+	private ParameterService parameterService;
 	
 	
 	
@@ -38,7 +42,7 @@ public class InitialLoad {
 
 	public InitialLoad(PrixService prixService, ProfessionnelService professionnelService,
 			PatientService patientService, SeanceService seanceService, AdresseService adresseService,
-			FactureService factureService) {
+			FactureService factureService, ParameterService parametereService) {
 		super();
 		this.prixService = prixService;
 		this.professionnelService = professionnelService;
@@ -46,9 +50,11 @@ public class InitialLoad {
 		this.seanceService = seanceService;
 		this.adresseService = adresseService;
 		this.factureService = factureService;
+		this.parameterService = parametereService;
 	}
 
 	public void initialLoad() {
+		fillParameterTable();
 		fillPrice();
 		fillProfessionnal();
 		fillPatient();
@@ -56,6 +62,33 @@ public class InitialLoad {
 		fillFacture();
 	}
 	
+	private void fillParameterTable() {
+		
+		AppParameterAmount appParameterAmount = new AppParameterAmount(28.33, "Prix seance demi-heure au cabinet ", SeanceType.Cabinet, SeanceDuration.demi_heure);
+		parameterService.save(appParameterAmount);
+		appParameterAmount = new AppParameterAmount(28.33, "Prix seance demi-heure au domicile ", SeanceType.Domicile, SeanceDuration.demi_heure);
+		parameterService.save(appParameterAmount);
+		appParameterAmount = new AppParameterAmount(56.89, "Prix seance une heure au cabinet ", SeanceType.Cabinet, SeanceDuration.heure);
+		parameterService.save(appParameterAmount);
+		appParameterAmount = new AppParameterAmount(56.89, "Prix seance une heure au domicile ", SeanceType.Domicile, SeanceDuration.heure);
+		parameterService.save(appParameterAmount);
+		
+		
+		System.out.println("Table of parameter : ");
+		
+		for(AppParameter param :  parameterService.findAll()) {
+			if(param instanceof AppParameterAmount)
+			System.out.println(" - " + "("+ param.getParamType()+")"+ ((AppParameterAmount) param).getDescription() + "  à " + ((AppParameterAmount) param).getAmount() ) ;
+		}
+		
+		System.out.println("Table of parameter2 : ");
+		
+		for(AppParameterAmount param :  parameterService.findAllAmounts()) {
+			System.out.println(" - " + "("+ param.getParamType()+")"+  param.getDescription() + "  à " + param.getAmount() ) ;
+		}
+		
+	}
+
 	private void fillFacture() {
 		Patient patient = new Patient();
 		Professionnel professionel = null;
@@ -65,7 +98,7 @@ public class InitialLoad {
 			professionel = professionnelService.findAllPro().stream().findFirst().get();
 		ArrayList<Seance> seances = new ArrayList<Seance>();
 		seanceService.findAllSeance().forEach(n -> seances.add(n));
-		Facture facture = new Facture( "Reference",  false , patient, professionel,"Communication ", LocalDate.now(), seances);
+		Facture facture = new Facture( "Reference",  false , patient, professionel,"Communication ", LocalDate.now(), LocalDate.now(), seances);
 		
 		factureService.save(facture);
 		
@@ -90,7 +123,7 @@ public class InitialLoad {
 		if(patient.isPresent()) {
 			Optional<Professionnel> professionnel = professionnelService.findAllPro().stream().findFirst();
 			if (professionnel.isPresent()) {
-				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2020, 12, 1), LocalTime.of(14, 30)), SeanceDuration.demi_heure, SeanceType.Cabinet
+				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2021, 12, 1), LocalTime.of(14, 30)), SeanceDuration.demi_heure, SeanceType.Cabinet
 						);
 	   			seanceService.save(seance);
 				seanceService.findAllSeance().forEach(n -> System.out.println(n.toString()));

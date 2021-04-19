@@ -15,11 +15,12 @@
       <TableView fx:id="seanceTable" editable="true" layoutX="97.0" layoutY="109.0" prefHeight="183.0" prefWidth="425.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="300.0" text="Rendez-vous" />
-          <TableColumn fx:id="selectColumn" minWidth="0.0" prefWidth="113.0" text="Selectionner" />
+          <TableColumn fx:id="selectColumn" minWidth="0.0" onEditStart="#test" prefWidth="113.0" text="Selectionner" />
         </columns>
       </TableView>
       <Label layoutX="97.0" layoutY="39.0" prefHeight="17.0" prefWidth="227.0" text="Veuillez choisir le mois de la facture" />
-      <ComboBox fx:id="listOfMonths" layoutX="342.0" layoutY="35.0" prefWidth="150.0" promptText="Choix" />
+      <ComboBox fx:id="listOfMonths" layoutX="317.0" layoutY="35.0" prefHeight="25.0" prefWidth="126.0" promptText="Choix" />
       <TextField fx:id="communication" layoutX="97.0" layoutY="312.0" prefHeight="25.0" prefWidth="425.0" promptText="Communication" />
+      <ComboBox fx:id="listOfYears" layoutX="459.0" layoutY="35.0" prefHeight="25.0" prefWidth="93.0" promptText="Choix" />
    </children>
 </AnchorPane>

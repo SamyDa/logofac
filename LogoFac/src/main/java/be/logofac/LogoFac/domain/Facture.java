@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 
@@ -20,7 +20,7 @@ public class Facture {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int factureId;
-	@Column(unique =  true)
+	//@Column(unique =  true)
 	private String reference;
 	
 	private boolean printed = false;
@@ -35,7 +35,9 @@ public class Facture {
 	
 	private LocalDate applicationDate;
 	
-	@OneToMany(fetch = FetchType.EAGER )
+	private LocalDate creationDate;
+	
+	@ManyToMany(fetch = FetchType.EAGER )
 	@JoinTable( name = "jnd_FactSeance" , joinColumns = @JoinColumn(name = "facture_fk") ,inverseJoinColumns = @JoinColumn( name = "seance_fk") )
 	private List<Seance> seances;
 	
@@ -44,14 +46,15 @@ public class Facture {
 	}
 
 	public Facture(String reference, boolean printed, Patient patient, Professionnel professionnel,
-			String communication, LocalDate creationDate, List<Seance> seances) {
+			String communication, LocalDate applicationDate, LocalDate creationDate, List<Seance> seances) {
 		super();
 		this.reference = reference;
 		this.printed = printed;
 		this.patient = patient;
 		this.professionnel = professionnel;
 		this.communication = communication;
-		this.applicationDate = creationDate;
+		this.applicationDate = applicationDate;
+		this.creationDate = creationDate;
 		this.seances = seances;
 	}
 
@@ -119,11 +122,11 @@ public class Facture {
 	
 
 	public LocalDate getCreationDate() {
-		return applicationDate;
+		return creationDate;
 	}
 
 	public void setCreationDate(LocalDate creationDate) {
-		this.applicationDate = creationDate;
+		this.creationDate = creationDate;
 	}
 
 
@@ -138,6 +141,8 @@ public class Facture {
 	public void setApplicationDate(LocalDate applicationDate) {
 		this.applicationDate = applicationDate;
 	}
+	
+	
 
 	public static String createReference(int year, int invoiceCount) {
 		// TODO Auto-generated method stub

@@ -2,6 +2,7 @@ package be.logofac.LogoFac.Controllers;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +12,15 @@ import be.logofac.LogoFac.domain.Seance;
 import be.logofac.LogoFac.domain.enums.SeanceDuration;
 import be.logofac.LogoFac.domain.enums.SeanceType;
 import be.logofac.LogoFac.views.SelectPersonPane;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class AddDateController extends ViewController {
 
@@ -24,8 +30,16 @@ public class AddDateController extends ViewController {
 	private ComboBox<LocalTime > availableTimeslotList;
 	@FXML
 	private ComboBox<String> durationList;
+	@FXML
+	private TableView<Seance> newAppointmentList;
+	@FXML
+	private TableColumn<Seance, String> seanceDescription;
+	
+	
 	List<LocalTime> timeList = new ArrayList<LocalTime>();
 	List<String> duration = new ArrayList<String>();
+	List<Seance>seanceList = new ArrayList<Seance>();
+	ObservableList<Seance> obsSeanceList;
 	
 	public AddDateController() {
 		
@@ -36,6 +50,7 @@ public class AddDateController extends ViewController {
 			timeList.add(LocalTime.of(time.getHour(), time.getMinute()));
 			time = time.plusMinutes(30);
 		}
+		timeList.sort((x1 , x2 ) -> {if(x1.isAfter(x2)) return -1; else return 1;});
 		for(SeanceDuration seance :  SeanceDuration.values())
 			duration.add(seance.getDescrption());
 	}
@@ -48,7 +63,25 @@ public class AddDateController extends ViewController {
 	@FXML
 	private void addSelectedDate() {
 		Professionnel pro = FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get();
-		System.out.println("pro : " + pro);
+		
+		if(datePicker.getValue() == null || availableTimeslotList.getValue() == null || durationList.getValue() == null)
+			return;
+		
+		
+		SeanceDuration seanceDuration = null;
+		for(SeanceDuration seanceDur: SeanceDuration.values()) {
+			if(durationList.getValue().equals(seanceDur.getDescrption())){
+					seanceDuration = seanceDur;
+			}
+		}
+		
+		LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), availableTimeslotList.getValue());
+		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, SeanceType.Cabinet);
+		seanceList.add(seance);
+		obsSeanceList = FXCollections.observableList(seanceList);
+		newAppointmentList.setItems(obsSeanceList);
+		/*
+		Professionnel pro = FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get();
 		if(datePicker.getValue() == null || availableTimeslotList.getValue() == null || durationList.getValue() == null)
 			return;
 		
@@ -65,6 +98,8 @@ public class AddDateController extends ViewController {
 		
 		FrontApp.serviceCatalog.getSeanceService().findAllSeance().forEach( n-> System.out.println(n.toString()));
 		pane.returnBack();
+		
+		*/
 	}
 
 	public void loadControllerLogic() {
@@ -73,6 +108,28 @@ public class AddDateController extends ViewController {
 			pane.setNavigatedPane(new SelectPersonPane(pane));
 		availableTimeslotList.setItems( FXCollections.observableList(timeList));
 		durationList.setItems(FXCollections.observableList(duration));
+		
+		seanceDescription.setCellValueFactory(cell ->  new SimpleStringProperty(cell.getValue().getHourFrom().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm ")) + " ("+cell.getValue().getHourNumber().getDescrption()+")"));
+		
+	}
+	
+	@FXML 
+	private void saveList() {
+		
+		seanceList.forEach(n -> FrontApp.serviceCatalog.getSeanceService().save(n));
+		pane.returnBack();
+		
+		
+	}
+	
+	@FXML 
+	private void deleteAppointment() {
+		
+		seanceList.remove(newAppointmentList.getSelectionModel().getSelectedItem());
+		obsSeanceList = FXCollections.observableList(seanceList);
+		
+		
+		
 		
 	}
 	

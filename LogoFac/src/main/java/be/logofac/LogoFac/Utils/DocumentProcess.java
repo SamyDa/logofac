@@ -24,6 +24,7 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 
+import be.logofac.LogoFac.domain.AppParameterAmount;
 import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Patient;
 import be.logofac.LogoFac.domain.Professionnel;
@@ -43,10 +44,12 @@ import be.logofac.LogoFac.service.SeanceService;
 public class DocumentProcess {
 
 	private static final String BREAK_LINE = "\n";
-
+	private ParamRetriever paramRetriever;
+	private double total = 0 ;
 	public void loadDocumentData(Facture facture) {
 		
 		System.out.println("Load documents ");
+		this.paramRetriever = new ParamRetriever();
 		createDocument(facture);
 		
 	}
@@ -73,6 +76,11 @@ public class DocumentProcess {
 		      addBreakLine(document);
 		      //add the seances and price
 		      addDetailedTable(document, facture);
+		      addBreakLine(document, 2);
+		      
+		    //add the seances and price
+		      addFooter(document, facture);
+		      
 		      // Closing the document    
 		      document.close();              
 		      System.out.println("PDF Created");    
@@ -84,6 +92,21 @@ public class DocumentProcess {
 		
 	}
 	
+	private void addBreakLine(Document document, int i) {
+		
+		for(int j = 0 ; j<i; j++)
+			addBreakLine(document);
+		
+	}
+
+	private void addFooter(Document document, Facture facture) {
+		document.add(new Paragraph(new Text("Facture payable au comptant par virement bancaire sur le compte : " ).setBold()).add("Iban : " + facture.getProfessionnel().getIbanAccount() + " " + " BIC : " + facture.getProfessionnel().getBicAccount() ));
+		document.add(new Paragraph(new Text("Communication sur le virement : " ).setBold()).add(facture.getCommunication()));
+		document.add(new Paragraph(new Text("Paiement dès réception." ).setBold()));
+		
+		
+	}
+
 	private void addDetailedTable(Document document, Facture facture) {
 		float [] pointColumnWidths = {300F, 300F};   
 		Table table = new Table(pointColumnWidths);
@@ -91,6 +114,7 @@ public class DocumentProcess {
 		table.addHeaderCell(getCell("  Montant", TextAlignment.CENTER).setBold().setFontSize(14).setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
 		table.addCell(getDescriptionCell(facture));
 		table.addCell(getAmountCell(facture));
+		//table.addFooterCell(getCell(new Paragraph((new Text("Total = ")).setBold().getText().concat(String.valueOf(total))  ), TextAlignment.LEFT));
 		document.add(table);
 	}
 
@@ -98,7 +122,41 @@ public class DocumentProcess {
 		Cell cell = new Cell();
 		String text = "";
 		
-		cell.add(new Paragraph().add(new Text(text)));
+		for(SeanceDuration duration : SeanceDuration.values()) {
+			
+			
+ 			List<Seance> seanceList = facture.getSeances().stream().filter(n -> n.getHourNumber() == duration).collect(Collectors.toList());
+ 			
+ 			if(seanceList.size() > 0 ) {
+ 				
+ 				for(SeanceType seanceType : SeanceType.values()) {
+ 					
+ 					List<Seance> refinedSeanceList =  seanceList.stream().filter(n-> n.getSeanceType() == seanceType).collect(Collectors.toList());
+ 					
+ 					if (refinedSeanceList.size()> 0)
+ 					{
+ 						AppParameterAmount appParameterAmount = new AppParameterAmount(duration, seanceType);
+ 						AppParameterAmount retrievedParameterAmount =(AppParameterAmount) (new ParamRetriever()).retrieveParameter(appParameterAmount);
+ 						if(retrievedParameterAmount != null) {
+ 							double localTotal = refinedSeanceList.size() * retrievedParameterAmount.getAmount();
+ 							total = total + localTotal;
+ 							text = text + refinedSeanceList.size() + "x" + retrievedParameterAmount.getAmount() +" = "  + localTotal + "€ \n";
+ 						}
+ 						
+ 					}
+ 				}
+ 			}
+			
+		}
+		
+		//text = text + "Total : " + total;
+		
+		cell.add(new Cell().add(new Paragraph().add(new Text(text))));
+		
+		Cell cellTotal = new  Cell().add(new Paragraph().add((new Text("Total : ")).setBold().getText().concat( String.valueOf(total))));
+		cellTotal.setBorder(new SolidBorder(3));
+		cellTotal.setTextAlignment(TextAlignment.LEFT);
+		cell.add(cellTotal);
 		return cell;
 	}
 
@@ -158,18 +216,18 @@ public class DocumentProcess {
 			
 			if (seanceList.size()== 1)
 			{
-				text = text + seanceList.get(0).getHourFrom().format( DateTimeFormatter.ofPattern(" dd/MM "));
+				text = text + seanceList.get(0).getHourFrom().format( DateTimeFormatter.ofPattern("dd/MM"));
 			}
 			else {
 				for(int i = 0 ; i < seanceList.size() ; i++) {
 					
-					text = text + seanceList.get(i).getHourFrom().format( DateTimeFormatter.ofPattern(" dd/MM "));
+					text = text + seanceList.get(i).getHourFrom().format( DateTimeFormatter.ofPattern("dd/MM"));
 					
 					if(i < seanceList.size() -2) {
-						text = text + ',';
+						text = text + ", ";
 					}else if (i < seanceList.size()-1)
 					{
-						text= text + "et";
+						text= text + " et ";
 					}
 				}
 			}
@@ -246,5 +304,12 @@ public class DocumentProcess {
 	    cell.setTextAlignment(alignment);
 	    cell.setBorder(Border.NO_BORDER);
 	    return cell;
+	}
+	public Cell getCell(Paragraph text, TextAlignment alignment) {
+		Cell cell = new Cell().add(text);
+		cell.setPadding(0);
+		cell.setTextAlignment(alignment);
+		cell.setBorder(Border.NO_BORDER);
+		return cell;
 	}
 }

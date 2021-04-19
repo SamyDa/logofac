@@ -12,7 +12,6 @@ import javafx.scene.layout.AnchorPane;
 
 public class SelectAppointmentToPrintPane extends NavigationPane {
 
-	private ObservableList<Seance> seanceObsist;
 	
 	public SelectAppointmentToPrintPane(NavigationPane parentPane) {
 		super(parentPane);
@@ -22,7 +21,7 @@ public class SelectAppointmentToPrintPane extends NavigationPane {
 	@Override
 	protected void showInitialPane() {
 		 // then display the first main menu
-		fillSeanceList();
+		//
 		 try {
 			 	FXMLLoader fxmlLoader = new FXMLLoader();
 			 	fxmlLoader = new FXMLLoader();
@@ -39,16 +38,6 @@ public class SelectAppointmentToPrintPane extends NavigationPane {
 
 	}
 	
-	public void fillSeanceList() {
-		seanceObsist = FXCollections.observableList(FrontApp.serviceCatalog.getSeanceService().findAllByPatient(this.getCacheData().getPatient()));
-		
-	}
-
-	public ObservableList<Seance> getPatientObsist() {
-		return seanceObsist;
-	}
-
-
 
 	@Override
 	protected void showPane() {

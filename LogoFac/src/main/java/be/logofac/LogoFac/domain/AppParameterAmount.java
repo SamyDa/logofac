@@ -2,8 +2,9 @@ package be.logofac.LogoFac.domain;
 
 import javax.persistence.Entity;
 
-import be.logofac.LogoFac.domain.enums.AmountType;
 import be.logofac.LogoFac.domain.enums.ParameterType;
+import be.logofac.LogoFac.domain.enums.SeanceDuration;
+import be.logofac.LogoFac.domain.enums.SeanceType;
 
 @Entity
 public class AppParameterAmount extends AppParameter {
@@ -11,19 +12,31 @@ public class AppParameterAmount extends AppParameter {
 	
 	private double amount;
 	private String description;
-	private AmountType amountType;
+	private SeanceType seanceType;
+	private SeanceDuration duration;
 	
-	public AppParameterAmount(double amount, String description, AmountType amountType) {
+	
+	public AppParameterAmount(double amount, String description, SeanceType seanceType, SeanceDuration duration) {
 		super();
 		this.paramType = ParameterType.Amount;
 		this.amount = amount;
 		this.description = description;
-		this.amountType = amountType;
+		this.seanceType = seanceType;
+		this.duration = duration;
 	}
+	
 	public AppParameterAmount() {
 		super();
 		this.paramType = ParameterType.Amount;
 	}
+	public AppParameterAmount(SeanceDuration duration, SeanceType seanceType) {
+		this.paramType = ParameterType.Amount;
+		this.amount = 0;
+		this.description = "";
+		this.seanceType = seanceType;
+		this.duration = duration;
+	}
+
 	public double getAmount() {
 		return amount;
 	}
@@ -36,11 +49,17 @@ public class AppParameterAmount extends AppParameter {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public AmountType getAmountType() {
-		return amountType;
+	public SeanceType getSeanceType() {
+		return seanceType;
 	}
-	public void setAmountType(AmountType amountType) {
-		this.amountType = amountType;
+	public void setSeanceType(SeanceType seanceType) {
+		this.seanceType = seanceType;
+	}
+	public SeanceDuration getDuration() {
+		return duration;
+	}
+	public void setDuration(SeanceDuration duration) {
+		this.duration = duration;
 	}
 	
 	

@@ -29,6 +29,8 @@ public class Seance {
 	
 	private SeanceDuration hourNumber;
 	private SeanceType seanceType;
+	
+	private Boolean toPrint;
 
 	
 	public Seance() {
@@ -51,6 +53,7 @@ public class Seance {
 	public String toString() {
 		return "Seance [seanceId=" + seanceId + ", patient=" + patient + ", professionnel=" + professionnel
 				+ ", hourFrom=" + hourFrom + ", hourNumber=" + hourNumber + "]";
+		
 	}
 
 
@@ -113,6 +116,18 @@ public class Seance {
 
 	public void setSeanceType(SeanceType seanceType) {
 		this.seanceType = seanceType;
+	}
+
+
+	public Boolean isToPrint() {
+		
+		return toPrint;
+	}
+
+
+	public void setToPrint(boolean seanceInvoiced) {
+		toPrint = seanceInvoiced;
+		
 	} 
 	
 	

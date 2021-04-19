@@ -11,8 +11,9 @@ public class ServiceCatalog {
 	private PrixService prixService;
 	private ProfessionnelService professionnelService;
 	private SeanceService seanceService;
+	private ParameterService parameterService;
 	public ServiceCatalog(AdresseService adresseService, FactureService factureService, PatientService patientService,
-			PrixService prixService, ProfessionnelService professionnelService, SeanceService seanceService) {
+			PrixService prixService, ProfessionnelService professionnelService, SeanceService seanceService, ParameterService parameterService) {
 		super();
 		this.adresseService = adresseService;
 		this.factureService = factureService;
@@ -20,6 +21,7 @@ public class ServiceCatalog {
 		this.prixService = prixService;
 		this.professionnelService = professionnelService;
 		this.seanceService = seanceService;
+		this.parameterService = parameterService;
 	}
 	
 	public AdresseService getAdresseService() {
@@ -39,6 +41,10 @@ public class ServiceCatalog {
 	}
 	public SeanceService getSeanceService() {
 		return seanceService;
+	}
+
+	public ParameterService getParameterService() {
+		return parameterService;
 	}
 	
 	

@@ -13,7 +13,7 @@ import be.logofac.LogoFac.domain.enums.ParameterType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="paramType", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name="type", discriminatorType = DiscriminatorType.STRING)
 public abstract class AppParameter {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
