@@ -26,12 +26,18 @@ public abstract class NavigationPane {
 
 	public NavigationPane(NavigationPane parentPane) {
 		
+		setParentPane(parentPane);
+		if(parentPane !=null)
+			showInitialPane();
+	}
+	
+	public void setParentPane(NavigationPane parentPane) {
+		
 		this.parentPane = parentPane;
 		this.cacheData  = parentPane.getCacheData();
 		this.primaryStage = parentPane.getPrimaryStage();
 		this.rootLayout = parentPane.getRootLayout();
 		this.headerController = parentPane.getHeaderController();
-		showInitialPane();
 	}
 
 	public NavigationPane currentPane() {
@@ -54,7 +60,7 @@ public abstract class NavigationPane {
 	}
 	
 	protected abstract void showInitialPane();
-	protected abstract void showPane();
+	public abstract void showPane();
 
 	public NavigationPane getNavigatedPane() {
 		return navigatedPane;

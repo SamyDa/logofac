@@ -50,7 +50,7 @@ public class SelectPersonPane extends NavigationPane {
 
 
 	@Override
-	protected void showPane() {
+	public void showPane() {
 		// TODO Auto-generated method stub
 		
 	}

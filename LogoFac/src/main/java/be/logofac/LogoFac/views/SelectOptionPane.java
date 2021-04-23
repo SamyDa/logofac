@@ -4,16 +4,16 @@ import be.logofac.LogoFac.FrontApp;
 import be.logofac.LogoFac.Controllers.SelectPersonController;
 import be.logofac.LogoFac.Controllers.ViewController;
 import be.logofac.LogoFac.domain.Patient;
-import be.logofac.LogoFac.domain.Seance;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
-public class SelectAppointmentToPrintPane extends NavigationPane {
+public class SelectOptionPane extends NavigationPane {
 
+	private ObservableList<Patient> patientObsist;
 	
-	public SelectAppointmentToPrintPane(NavigationPane parentPane) {
+	public SelectOptionPane(NavigationPane parentPane) {
 		super(parentPane);
 		
 	}
@@ -21,13 +21,12 @@ public class SelectAppointmentToPrintPane extends NavigationPane {
 	@Override
 	protected void showInitialPane() {
 		 // then display the first main menu
-		//
 		 try {
 			 	FXMLLoader fxmlLoader = new FXMLLoader();
 			 	fxmlLoader = new FXMLLoader();
-			 	fxmlLoader.setLocation(this.getClass().getResource("/views/AppointmentSelectionToPrint.fxml"));
-	            AnchorPane selectSeance = (AnchorPane) fxmlLoader.load();
-	            rootLayout.setCenter(selectSeance);
+			 	fxmlLoader.setLocation(this.getClass().getResource("/views/OptionList.fxml"));
+	            AnchorPane optionSelection = (AnchorPane) fxmlLoader.load();
+	            rootLayout.setCenter(optionSelection);
 	            
 	            ViewController controller = fxmlLoader.getController();
 	            controller.setPane(this);
@@ -37,7 +36,6 @@ public class SelectAppointmentToPrintPane extends NavigationPane {
 	        }		
 
 	}
-	
 
 	@Override
 	public void showPane() {
@@ -45,6 +43,6 @@ public class SelectAppointmentToPrintPane extends NavigationPane {
 		
 	}
 	
-	
+
 
 }

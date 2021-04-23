@@ -74,7 +74,7 @@ public class MainPane extends NavigationPane {
 	}
 
 	@Override
-	protected void showPane() {
+	public void showPane() {
 		displayPersonHeader();
 		displayMainMenu();
 	}

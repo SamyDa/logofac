@@ -1,21 +1,28 @@
 package be.logofac.LogoFac.views;
 
 import be.logofac.LogoFac.Controllers.ViewController;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 
-public class ConsultAppointmentPane extends NavigationPane {
+public class ManageProDataPane extends NavigationPane {
 
-
-	public ConsultAppointmentPane(NavigationPane parentPane) {
+	public ManageProDataPane(NavigationPane parentPane) {
 		super(parentPane);
+	}
+	
+	public  ManageProDataPane() {
+		
+		super(null);
 	}
 
 	@Override
 	protected void showInitialPane() {
+		 // then display the first main menu
 		 try {
 			    FXMLLoader fxmlLoader = new FXMLLoader();
-			 	fxmlLoader.setLocation(this.getClass().getResource("/views/ConsultAppointment.fxml"));
+			 	fxmlLoader.setLocation(this.getClass().getResource("/views/AddAppointment.fxml"));
 	            AnchorPane firstMenu = (AnchorPane) fxmlLoader.load();
 	            rootLayout.setCenter(firstMenu);
 	            ViewController controller = fxmlLoader.getController();
@@ -33,4 +40,5 @@ public class ConsultAppointmentPane extends NavigationPane {
 	}
 
 	
+
 }

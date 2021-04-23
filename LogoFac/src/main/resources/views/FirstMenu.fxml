@@ -9,7 +9,7 @@
          <children>
             <Button layoutX="154.0" layoutY="43.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="75.0" prefWidth="251.0" text="Ajouter un rdv" />
             <Button layoutX="154.0" layoutY="264.0" mnemonicParsing="false" onAction="#createInvoice" prefHeight="75.0" prefWidth="251.0" text="Créer une facture" />
-            <Button layoutX="154.0" layoutY="404.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="251.0" text="Gestion les données" />
+            <Button layoutX="154.0" layoutY="404.0" mnemonicParsing="false" onAction="#manageData" prefHeight="75.0" prefWidth="251.0" text="Gestion les données" />
             <Button layoutX="154.0" layoutY="148.0" mnemonicParsing="false" onAction="#consultAppointment" prefHeight="75.0" prefWidth="251.0" text="Consulter les rdv" />
          </children>
       </AnchorPane>

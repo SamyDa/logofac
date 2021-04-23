@@ -29,7 +29,7 @@ public class AddAppointmentPane extends NavigationPane {
 	}
 
 	@Override
-	protected void showPane() {
+	public void showPane() {
 		// TODO Auto-generated method stub
 		
 	}
