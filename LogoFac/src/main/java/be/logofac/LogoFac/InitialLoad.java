@@ -134,9 +134,9 @@ public class InitialLoad {
 	
 	private void fillPatient() {
 		Adresse adresse = new Adresse("patient adresse", "Patient Service ", "11", 1000, "Patient Land");
-		Patient patient = new Patient("Pat", "ient", adresse);
+		Patient patient = new Patient("Pat", "ient", LocalDate.of(1992, 05, 14),adresse);
 		patientService.save(patient);
-		patient = new Patient("Patout", "rien", adresse);
+		patient = new Patient("Patout", "rien",LocalDate.of(1993, 8, 12), adresse);
 		patientService.save(patient);
 		patientService.findAll().forEach(n -> System.out.println(n.toString()) );
 		

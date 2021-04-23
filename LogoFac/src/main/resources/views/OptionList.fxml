@@ -5,10 +5,11 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.OptionListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.OptionListController">
    <children>
-      <ListView fx:id="optionListView" layoutX="104.0" layoutY="79.0" prefHeight="200.0" prefWidth="392.0" />
-      <Button layoutX="273.0" layoutY="302.0" mnemonicParsing="false" onAction="#nextActionB" text="Suivant" />
-      <Label layoutX="60.0" layoutY="43.0" prefHeight="17.0" prefWidth="424.0" text="Veuillez choisir l'option souhaitée :" />
+      <ListView fx:id="optionListView" layoutX="101.0" layoutY="93.0" prefHeight="242.0" prefWidth="395.0" />
+      <Button layoutX="521.0" layoutY="93.0" mnemonicParsing="false" onAction="#nextActionB" prefHeight="25.0" prefWidth="78.0" text="Suivant" />
+      <Label layoutX="57.0" layoutY="57.0" prefHeight="17.0" prefWidth="424.0" text="Veuillez choisir l'option souhaitée :" />
+      <Label layoutX="8.0" layoutY="6.0" onMouseClicked="#back" text="Retour" underline="true" />
    </children>
 </AnchorPane>

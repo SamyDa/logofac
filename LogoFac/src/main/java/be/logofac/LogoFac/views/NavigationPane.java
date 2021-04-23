@@ -26,9 +26,11 @@ public abstract class NavigationPane {
 
 	public NavigationPane(NavigationPane parentPane) {
 		
-		setParentPane(parentPane);
-		if(parentPane !=null)
+		
+		if(parentPane !=null) {
+			setParentPane(parentPane);
 			showInitialPane();
+		}
 	}
 	
 	public void setParentPane(NavigationPane parentPane) {

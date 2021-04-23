@@ -80,26 +80,7 @@ public class AddDateController extends ViewController {
 		seanceList.add(seance);
 		obsSeanceList = FXCollections.observableList(seanceList);
 		newAppointmentList.setItems(obsSeanceList);
-		/*
-		Professionnel pro = FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get();
-		if(datePicker.getValue() == null || availableTimeslotList.getValue() == null || durationList.getValue() == null)
-			return;
-		
-		SeanceDuration seanceDuration = null;
-		for(SeanceDuration seance: SeanceDuration.values()) {
-			if(durationList.getValue().equals(seance.getDescrption())){
-					seanceDuration = seance;
-			}
-		}
-		
-		LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), availableTimeslotList.getValue());
-		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, SeanceType.Cabinet);
-		FrontApp.serviceCatalog.getSeanceService().save(seance);
-		
-		FrontApp.serviceCatalog.getSeanceService().findAllSeance().forEach( n-> System.out.println(n.toString()));
-		pane.returnBack();
-		
-		*/
+	
 	}
 
 	public void loadControllerLogic() {

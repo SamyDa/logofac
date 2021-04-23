@@ -1,20 +1,16 @@
 package be.logofac.LogoFac.Utils;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.border.SolidBorder;
@@ -33,23 +29,15 @@ import be.logofac.LogoFac.domain.enums.Description;
 import be.logofac.LogoFac.domain.enums.Mois;
 import be.logofac.LogoFac.domain.enums.SeanceDuration;
 import be.logofac.LogoFac.domain.enums.SeanceType;
-import be.logofac.LogoFac.service.AdresseService;
-import be.logofac.LogoFac.service.FactureService;
-import be.logofac.LogoFac.service.PatientService;
-import be.logofac.LogoFac.service.PrixService;
-import be.logofac.LogoFac.service.ProfessionnelService;
-import be.logofac.LogoFac.service.SeanceService;
 
 @Service
 public class DocumentProcess {
 
 	private static final String BREAK_LINE = "\n";
-	private ParamRetriever paramRetriever;
 	private double total = 0 ;
 	public void loadDocumentData(Facture facture) {
 		
 		System.out.println("Load documents ");
-		this.paramRetriever = new ParamRetriever();
 		createDocument(facture);
 		
 	}
@@ -58,11 +46,11 @@ public class DocumentProcess {
 	    String dest = facture.getReference() + ".pdf";     
 	    
 		try {
-			 PdfWriter writer = new PdfWriter(dest);
-			 // Creating a PdfDocument       
+			  PdfWriter writer = new PdfWriter(dest);
+			  // Creating a PdfDocument       
 		      PdfDocument pdfDoc = new PdfDocument(writer);      
 		      
-		   // Adding a new page 
+		      // Adding a new page 
 		      pdfDoc.addNewPage();   
 		      // Creating a Document        
 		      Document document = new Document(pdfDoc); 
@@ -72,13 +60,13 @@ public class DocumentProcess {
 		      //add the invoice reference
 		      document.add(new Paragraph(new Text("Facture N° " + facture.getReference())));
 		      //add the date
-		      document.add(new Paragraph(new Text("Date : " + facture.getApplicationDate())));
+		      document.add(new Paragraph(new Text("Date : " + facture.getCreationDate().format(DateTimeFormatter.ofPattern("dd-MM-YYYY")))));
 		      addBreakLine(document);
 		      //add the seances and price
 		      addDetailedTable(document, facture);
 		      addBreakLine(document, 2);
 		      
-		    //add the seances and price
+		      //add the seances and price
 		      addFooter(document, facture);
 		      
 		      // Closing the document    
@@ -86,7 +74,6 @@ public class DocumentProcess {
 		      System.out.println("PDF Created");    
 		      facture.setPrinted(true);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
@@ -100,7 +87,7 @@ public class DocumentProcess {
 	}
 
 	private void addFooter(Document document, Facture facture) {
-		document.add(new Paragraph(new Text("Facture payable au comptant par virement bancaire sur le compte : " ).setBold()).add("Iban : " + facture.getProfessionnel().getIbanAccount() + " " + " BIC : " + facture.getProfessionnel().getBicAccount() ));
+		document.add(new Paragraph(new Text("Facture payable au comptant par virement bancaire sur le compte : " ).setBold()).add("\n\t\tIBAN : " + facture.getProfessionnel().getIbanAccount() + " " + "\n\tBIC : " + facture.getProfessionnel().getBicAccount() ));
 		document.add(new Paragraph(new Text("Communication sur le virement : " ).setBold()).add(facture.getCommunication()));
 		document.add(new Paragraph(new Text("Paiement dès réception." ).setBold()));
 		
@@ -108,103 +95,84 @@ public class DocumentProcess {
 	}
 
 	private void addDetailedTable(Document document, Facture facture) {
-		float [] pointColumnWidths = {300F, 300F};   
+		float [] pointColumnWidths = {350F, 200F};   
 		Table table = new Table(pointColumnWidths);
 		table.addHeaderCell(getCell("  Description", TextAlignment.CENTER).setBold().setFontSize(14).setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
 		table.addHeaderCell(getCell("  Montant", TextAlignment.CENTER).setBold().setFontSize(14).setBorder(new SolidBorder(1)).setBackgroundColor(Color.LIGHT_GRAY));
-		table.addCell(getDescriptionCell(facture));
-		table.addCell(getAmountCell(facture));
-		//table.addFooterCell(getCell(new Paragraph((new Text("Total = ")).setBold().getText().concat(String.valueOf(total))  ), TextAlignment.LEFT));
+		addTableFirstCell(table, facture);
+		addSeanceAndAmounts(table, facture);
+		table.addFooterCell(getCell("Total", TextAlignment.LEFT).setBold().setBorder(new SolidBorder(1)).setMarginLeft(7));
+		table.addFooterCell(getCell(String.valueOf(((double) Math.round(total*100))/100) + "€", TextAlignment.LEFT).setBold().setBorder(new SolidBorder(1)).setMarginLeft(7));
+		table.setBorder(new SolidBorder(2));
 		document.add(table);
 	}
 
-	private Cell getAmountCell(Facture facture) {
-		Cell cell = new Cell();
-		String text = "";
-		
-		for(SeanceDuration duration : SeanceDuration.values()) {
-			
-			
- 			List<Seance> seanceList = facture.getSeances().stream().filter(n -> n.getHourNumber() == duration).collect(Collectors.toList());
- 			
- 			if(seanceList.size() > 0 ) {
- 				
- 				for(SeanceType seanceType : SeanceType.values()) {
- 					
- 					List<Seance> refinedSeanceList =  seanceList.stream().filter(n-> n.getSeanceType() == seanceType).collect(Collectors.toList());
- 					
- 					if (refinedSeanceList.size()> 0)
- 					{
- 						AppParameterAmount appParameterAmount = new AppParameterAmount(duration, seanceType);
- 						AppParameterAmount retrievedParameterAmount =(AppParameterAmount) (new ParamRetriever()).retrieveParameter(appParameterAmount);
- 						if(retrievedParameterAmount != null) {
- 							double localTotal = refinedSeanceList.size() * retrievedParameterAmount.getAmount();
- 							total = total + localTotal;
- 							text = text + refinedSeanceList.size() + "x" + retrievedParameterAmount.getAmount() +" = "  + localTotal + "€ \n";
- 						}
- 						
- 					}
- 				}
- 			}
-			
-		}
-		
-		//text = text + "Total : " + total;
-		
-		cell.add(new Cell().add(new Paragraph().add(new Text(text))));
-		
-		Cell cellTotal = new  Cell().add(new Paragraph().add((new Text("Total : ")).setBold().getText().concat( String.valueOf(total))));
-		cellTotal.setBorder(new SolidBorder(3));
-		cellTotal.setTextAlignment(TextAlignment.LEFT);
-		cell.add(cellTotal);
-		return cell;
-	}
-
-	private Cell getDescriptionCell(Facture facture) {
-		Cell cell = new Cell();
-		Mois moisFacture = null ;
-		
-		for (Mois mois : Mois.values())
-		{
-			if(mois.checkMois(facture.getCreationDate().getMonthValue())) {
-				moisFacture = mois;
-				break;
-			}
-		}
-		cell.add(new Paragraph().add( new Text(Description.Honoraires.getDescription(moisFacture) + "\n\n")));
-		
+	private void addSeanceAndAmounts(Table table, Facture facture) {
 		String text = "";
 		//Need to separate the description between hours and 
 		
 		for(SeanceDuration seanceDuration : SeanceDuration.values()) {
 			
 			List<Seance> filteredSeances = facture.getSeances().stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
-			
+			text = "";
 			for(SeanceType seanceType :  SeanceType.values()) {
 				List<Seance> secondFilteredSeances = filteredSeances.stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
+				text = "";
 				if(secondFilteredSeances.size() > 0 ) {
+					
+					// Add the description 
+					
 					if(secondFilteredSeances.size() == 1) {
 						String duration = "";
 						if (seanceDuration.getDescrption().toLowerCase().toCharArray()[0] == 'u') 
 							duration = "d'" + seanceDuration.getDescrption();
 						else
 							duration = "de " + seanceDuration.getDescrption();
-						text = 	"1 séance " + duration + " " + seanceType.getSeanceString() + "\n" ;
+						text = 	text + "1 séance " + duration + " " + seanceType.getSeanceString() + "\n" ;
 					}
 					else
 					{
-						text = secondFilteredSeances.size() + " séances " + seanceDuration.getDescrption() + " " + seanceType.getSeanceString() + "\n";
+						text = text + secondFilteredSeances.size() + " séances " + seanceDuration.getDescrption() + " " + seanceType.getSeanceString() + "\n";
 					}
 					
 					text = text + listSeanceDateText(secondFilteredSeances);
+					table.addCell(getCell("\n"+ text, TextAlignment.LEFT,3));
+					
+					//Add the amount 
+					AppParameterAmount appParameterAmount = new AppParameterAmount(seanceDuration, seanceType);
+					AppParameterAmount retrievedParameterAmount =(AppParameterAmount) (new ParamRetriever()).retrieveParameter(appParameterAmount);
+					text = "";
+					if(retrievedParameterAmount != null) {
+						double localTotal = (double )secondFilteredSeances.size() * retrievedParameterAmount.getAmount();
+						total = total + ((double) Math.round(localTotal*100))/100;
+						text = text + secondFilteredSeances.size() + "x" + retrievedParameterAmount.getAmount() +" = "  +((double) Math.round(localTotal*100))/100 + "€";
+						table.addCell(getCell("\n" + text, TextAlignment.LEFT,3).setBorderLeft(new SolidBorder(1)));
+					}
 				}
 			}
 			
 		}
 		
-		cell.add(new Paragraph().add(new Text(text)));
+		//add 2 final cells for estethic
+		table.addCell(getCell("\n" , TextAlignment.LEFT));
+		table.addCell(getCell("\n" , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
 		
-		return cell;
+	}
+
+	private void addTableFirstCell(Table table, Facture facture) {
+		Cell cell = new Cell();
+		Mois moisFacture = null ;
+		
+		for (Mois mois : Mois.values())
+		{
+			if(mois.checkMois(facture.getApplicationDate().getMonthValue())) {
+				moisFacture = mois;
+				break;
+			}
+		}
+		table.addCell(getCell(new Paragraph().add( new Text("\n" + Description.Honoraires.getDescription(moisFacture) + "\n")).setUnderline(),  TextAlignment.LEFT,3));
+		table.addCell(getCell(" " , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
+		
 	}
 
 	private String listSeanceDateText(List<Seance> seanceList) {
@@ -256,6 +224,7 @@ public class DocumentProcess {
 	}
 
 
+
 	private String retrievePatientInfo(Patient patient) {
 		
 		return patient.getFirstName() + " " + patient.getLastName() + BREAK_LINE  
@@ -298,18 +267,26 @@ public class DocumentProcess {
 	}
 
 
-	public Cell getCell(String text, TextAlignment alignment) {
+	public Cell getCell(String text, TextAlignment alignment ) {
+	    return getCell(text, alignment, 0 ); 
+	}
+	public Cell getCell(Paragraph text, TextAlignment alignment  ) {
+		return getCell(text, alignment, 0 );
+	}
+	public Cell getCell(String text, TextAlignment alignment, float margin) {
 	    Cell cell = new Cell().add(new Paragraph(text));
 	    cell.setPadding(0);
 	    cell.setTextAlignment(alignment);
 	    cell.setBorder(Border.NO_BORDER);
+	    cell.setMarginLeft(margin);
 	    return cell;
 	}
-	public Cell getCell(Paragraph text, TextAlignment alignment) {
+	public Cell getCell(Paragraph text, TextAlignment alignment , float margin) {
 		Cell cell = new Cell().add(text);
 		cell.setPadding(0);
 		cell.setTextAlignment(alignment);
 		cell.setBorder(Border.NO_BORDER);
+		cell.setMarginLeft(margin);
 		return cell;
 	}
 }

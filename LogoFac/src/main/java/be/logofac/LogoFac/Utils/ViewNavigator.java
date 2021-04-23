@@ -21,7 +21,7 @@ public class ViewNavigator {
 		return null;
 	}
 	
-	private NavigationPane retrievePaneFromView(Views view) {
+	public NavigationPane retrievePaneFromView(Views view) {
 		
 		
 		try {

@@ -2,10 +2,11 @@ package be.logofac.LogoFac.domain.enums;
 
 import be.logofac.LogoFac.views.ManagePatientDataPane;
 import be.logofac.LogoFac.views.ManageProDataPane;
+import be.logofac.LogoFac.views.PatientDataDialogPane;
 
 public enum Views {
 
-	OptionView_ManagePatientData( (ManagePatientDataPane.class),"Option manage patient data") , OptionView_ManageProData( ManageProDataPane.class,"Option manage professionnal data") ;
+	OptionView_ManagePatientData( (ManagePatientDataPane.class),"Option manage patient data") , OptionView_ManageProData( ManageProDataPane.class,"Option manage professionnal data"), ManagePatientData_Dialog(PatientDataDialogPane.class , "Dialog with patient data") ;
 	
 	
 	private Class pane;

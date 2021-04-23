@@ -1,4 +1,6 @@
 package be.logofac.LogoFac.domain;
+import java.time.LocalDate;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ public class Patient {
 	
 	private String firstName ; 
 	private String lastName;
+	private LocalDate birthdate;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn( name =  "fk_adresse")
@@ -27,10 +30,11 @@ public class Patient {
 		super();
 	}
 
-	public Patient ( String firstName, String lastName, Adresse adresse) {
+	public Patient ( String firstName, String lastName,  LocalDate birthdate, Adresse adresse) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.birthdate = birthdate;
 		this.adresse = adresse;
 	}
 
@@ -68,6 +72,14 @@ public class Patient {
 
 	public int getPatientId() {
 		return this.patientId;
+	}
+
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
 	}
 	
 	

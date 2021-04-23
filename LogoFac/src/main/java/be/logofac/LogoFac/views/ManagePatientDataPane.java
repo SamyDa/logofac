@@ -22,7 +22,7 @@ public class ManagePatientDataPane extends NavigationPane {
 		 // then display the first main menu
 		 try {
 			    FXMLLoader fxmlLoader = new FXMLLoader();
-			 	fxmlLoader.setLocation(this.getClass().getResource("/views/AddAppointment.fxml"));
+			 	fxmlLoader.setLocation(this.getClass().getResource("/views/OptionPatientManagement.fxml"));
 	            AnchorPane firstMenu = (AnchorPane) fxmlLoader.load();
 	            rootLayout.setCenter(firstMenu);
 	            ViewController controller = fxmlLoader.getController();

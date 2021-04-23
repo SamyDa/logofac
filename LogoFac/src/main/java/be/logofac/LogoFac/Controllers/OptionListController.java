@@ -69,5 +69,9 @@ public class OptionListController extends ViewController {
 		
 	}
 	
+	@FXML
+	private void back() {
+		pane.returnBack();
+	}
 	
 }
