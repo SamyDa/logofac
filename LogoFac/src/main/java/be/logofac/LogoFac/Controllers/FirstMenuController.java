@@ -1,7 +1,11 @@
 package be.logofac.LogoFac.Controllers;
 
+import be.logofac.LogoFac.FrontApp;
+import be.logofac.LogoFac.Utils.ViewNavigator;
+import be.logofac.LogoFac.domain.enums.Options;
 import be.logofac.LogoFac.views.AddAppointmentPane;
 import be.logofac.LogoFac.views.ConsultAppointmentPane;
+import be.logofac.LogoFac.views.NavigationPane;
 import be.logofac.LogoFac.views.SelectAppointmentToPrintPane;
 import be.logofac.LogoFac.views.SelectOptionPane;
 import javafx.fxml.FXML;
@@ -36,5 +40,15 @@ public class FirstMenuController extends ViewController {
 		
 	}
 
+	
+	@Override
+	public void loadControllerLogic() {
+		if(FrontApp.serviceCatalog.getProfessionnelService().findAllPro().size() == 0) {
+			NavigationPane pane  = (new ViewNavigator()).getViewFromInputOption(Options.ProManagement);
+			pane.setParentPane(this.pane);
+			pane.showPane();
+		}
+			
+	}
 	
 }

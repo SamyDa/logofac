@@ -58,8 +58,8 @@ public class InitialLoad {
 		fillPrice();
 		fillProfessionnal();
 		fillPatient();
-		fillSeance();
-		fillFacture();
+	//	fillSeance();
+	//	fillFacture();
 	}
 	
 	private void fillParameterTable() {
@@ -68,7 +68,11 @@ public class InitialLoad {
 		parameterService.save(appParameterAmount);
 		appParameterAmount = new AppParameterAmount(28.33, "Prix seance demi-heure au domicile ", SeanceType.Domicile, SeanceDuration.demi_heure);
 		parameterService.save(appParameterAmount);
+		appParameterAmount = new AppParameterAmount(28.33, "Prix seance demi-heure en ligne ", SeanceType.Online, SeanceDuration.demi_heure);
+		parameterService.save(appParameterAmount);
 		appParameterAmount = new AppParameterAmount(56.89, "Prix seance une heure au cabinet ", SeanceType.Cabinet, SeanceDuration.heure);
+		parameterService.save(appParameterAmount);
+		appParameterAmount = new AppParameterAmount(56.89, "Prix seance une heure en ligne ", SeanceType.Online, SeanceDuration.heure);
 		parameterService.save(appParameterAmount);
 		appParameterAmount = new AppParameterAmount(56.89, "Prix seance une heure au domicile ", SeanceType.Domicile, SeanceDuration.heure);
 		parameterService.save(appParameterAmount);

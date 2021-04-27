@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.OptionProDataManagementController">
+   <children>
+      <Label layoutX="8.0" layoutY="6.0" onMouseClicked="#back" text="Retour" underline="true" />
+      <Label layoutX="30.0" layoutY="71.0" text="Prénom" />
+      <Label layoutX="30.0" layoutY="115.0" text="Nom" />
+      <Label layoutX="30.0" layoutY="165.0" text="Profession" />
+      <Label layoutX="30.0" layoutY="212.0" text="Email" />
+      <Label layoutX="30.0" layoutY="265.0" text="Téléphone" />
+      <Label layoutX="30.0" layoutY="318.0" text="INAMI" />
+      <Label layoutX="30.0" layoutY="368.0" text="BCE" />
+      <Label layoutX="30.0" layoutY="423.0" text="IBAN" />
+      <Label layoutX="30.0" layoutY="479.0" text="BIC" />
+      <Button layoutX="284.0" layoutY="509.0" mnemonicParsing="false" onAction="#save" text="Sauver" />
+      <Label layoutX="284.0" layoutY="165.0" text="Rue" />
+      <Label layoutX="284.0" layoutY="212.0" text="Numéro" />
+      <Label layoutX="284.0" layoutY="265.0" text="CP" />
+      <Label layoutX="284.0" layoutY="318.0" text="Ville" />
+      <Label layoutX="284.0" layoutY="368.0" text="Pays" />
+      <TextField fx:id="prenomField" layoutX="106.0" layoutY="67.0" />
+      <TextField fx:id="nomField" layoutX="106.0" layoutY="111.0" />
+      <TextField fx:id="professionField" layoutX="106.0" layoutY="161.0" />
+      <TextField fx:id="emailField" layoutX="106.0" layoutY="208.0" />
+      <TextField fx:id="telephoneField" layoutX="106.0" layoutY="261.0" />
+      <TextField fx:id="inamiField" layoutX="106.0" layoutY="314.0" />
+      <TextField fx:id="bceField" layoutX="106.0" layoutY="364.0" />
+      <TextField fx:id="ibanField" layoutX="106.0" layoutY="419.0" />
+      <TextField fx:id="bicField" layoutX="106.0" layoutY="475.0" />
+      <TextField fx:id="rueField" layoutX="348.0" layoutY="161.0" prefHeight="25.0" prefWidth="250.0" />
+      <TextField fx:id="numeroField" layoutX="348.0" layoutY="208.0" />
+      <TextField fx:id="cpField" layoutX="348.0" layoutY="261.0" />
+      <TextField fx:id="villeField" layoutX="348.0" layoutY="314.0" />
+      <TextField fx:id="paysField" layoutX="348.0" layoutY="364.0" />
+   </children>
+</AnchorPane>

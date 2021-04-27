@@ -28,7 +28,12 @@ public class ParamRetriever {
 	@SuppressWarnings("unchecked")
 	private AppParameterAmount retrieveAmount(AppParameterAmount appParameter) {
 		
-		return ((List<AppParameterAmount>)  parameterService.findAllAmounts().stream().filter(n -> n.getDuration() == appParameter.getDuration() && n.getSeanceType() == appParameter.getSeanceType()).collect(Collectors.toList())).get(0);
+		List<AppParameterAmount> list = (List<AppParameterAmount>)  parameterService.findAllAmounts().stream().filter(n -> n.getDuration() == appParameter.getDuration() && n.getSeanceType() == appParameter.getSeanceType()).collect(Collectors.toList());
+		
+		if(list.size()> 0 )
+			return list.get(0);
+		else
+			return null;
 		
 	}
 	

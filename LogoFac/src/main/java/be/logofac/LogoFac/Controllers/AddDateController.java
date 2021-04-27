@@ -31,12 +31,15 @@ public class AddDateController extends ViewController {
 	@FXML
 	private ComboBox<String> durationList;
 	@FXML
+	private ComboBox<SeanceType> seanceType;
+	@FXML
 	private TableView<Seance> newAppointmentList;
 	@FXML
 	private TableColumn<Seance, String> seanceDescription;
 	
 	
 	List<LocalTime> timeList = new ArrayList<LocalTime>();
+	List<SeanceType> seanceTypeList = new ArrayList<SeanceType>();
 	List<String> duration = new ArrayList<String>();
 	List<Seance>seanceList = new ArrayList<Seance>();
 	ObservableList<Seance> obsSeanceList;
@@ -53,6 +56,9 @@ public class AddDateController extends ViewController {
 		timeList.sort((x1 , x2 ) -> {if(x1.isAfter(x2)) return -1; else return 1;});
 		for(SeanceDuration seance :  SeanceDuration.values())
 			duration.add(seance.getDescrption());
+		
+		for(SeanceType type : SeanceType.values())
+			seanceTypeList.add(type);
 	}
 	
 	@FXML
@@ -64,7 +70,7 @@ public class AddDateController extends ViewController {
 	private void addSelectedDate() {
 		Professionnel pro = FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get();
 		
-		if(datePicker.getValue() == null || availableTimeslotList.getValue() == null || durationList.getValue() == null)
+		if(datePicker.getValue() == null || availableTimeslotList.getValue() == null || durationList.getValue() == null || seanceType.getValue() == null)
 			return;
 		
 		
@@ -76,7 +82,7 @@ public class AddDateController extends ViewController {
 		}
 		
 		LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), availableTimeslotList.getValue());
-		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, SeanceType.Cabinet);
+		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, seanceType.getValue());
 		seanceList.add(seance);
 		obsSeanceList = FXCollections.observableList(seanceList);
 		newAppointmentList.setItems(obsSeanceList);
@@ -88,28 +94,24 @@ public class AddDateController extends ViewController {
 		if(pane.getCacheData().getPatient() == null)
 			pane.setNavigatedPane(new SelectPersonPane(pane));
 		availableTimeslotList.setItems( FXCollections.observableList(timeList));
+		seanceType.setItems(FXCollections.observableList(seanceTypeList));
 		durationList.setItems(FXCollections.observableList(duration));
-		
-		seanceDescription.setCellValueFactory(cell ->  new SimpleStringProperty(cell.getValue().getHourFrom().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm ")) + " ("+cell.getValue().getHourNumber().getDescrption()+")"));
+		seanceType.setValue(SeanceType.Cabinet);
+		seanceDescription.setCellValueFactory(cell ->  new SimpleStringProperty(cell.getValue().getHourFrom().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm ")) + " ("+cell.getValue().getHourNumber().getDescrption()+" " + cell.getValue().getSeanceType().getSeanceString()+")"));
 		
 	}
 	
 	@FXML 
 	private void saveList() {
-		
 		seanceList.forEach(n -> FrontApp.serviceCatalog.getSeanceService().save(n));
 		pane.returnBack();
-		
 		
 	}
 	
 	@FXML 
 	private void deleteAppointment() {
-		
 		seanceList.remove(newAppointmentList.getSelectionModel().getSelectedItem());
 		obsSeanceList = FXCollections.observableList(seanceList);
-		
-		
 		
 		
 	}

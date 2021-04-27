@@ -31,6 +31,7 @@ public class MainPane extends NavigationPane {
 	            rootLayout.setCenter(firstMenu);
 	            ViewController  controller = fxmlLoader.getController();
 	            controller.setPane(this);
+	            controller.loadControllerLogic();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

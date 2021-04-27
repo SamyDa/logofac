@@ -22,9 +22,9 @@ public class ManageProDataPane extends NavigationPane {
 		 // then display the first main menu
 		 try {
 			    FXMLLoader fxmlLoader = new FXMLLoader();
-			 	fxmlLoader.setLocation(this.getClass().getResource("/views/AddAppointment.fxml"));
-	            AnchorPane firstMenu = (AnchorPane) fxmlLoader.load();
-	            rootLayout.setCenter(firstMenu);
+			 	fxmlLoader.setLocation(this.getClass().getResource("/views/OptionProDataManagement.fxml"));
+	            AnchorPane proDataMgt = (AnchorPane) fxmlLoader.load();
+	            rootLayout.setCenter(proDataMgt);
 	            ViewController controller = fxmlLoader.getController();
 	            controller.setPane(this);
 	            controller.loadControllerLogic();
@@ -35,7 +35,7 @@ public class ManageProDataPane extends NavigationPane {
 
 	@Override
 	public void showPane() {
-		// TODO Auto-generated method stub
+		showInitialPane();
 		
 	}
 
