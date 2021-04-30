@@ -67,7 +67,7 @@ public class SelectAppointmentToPrintController extends ViewController {
 			pane.setNavigatedPane(new SelectPersonPane(pane));
 		else {
 			
-			listOfMonths.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {selectedMonth = newValue; fillSeanceList(); communication.setText("Paiment " + selectedMonth + " " + pane.getCacheData().getPatient().getFirstName() + " " + pane.getCacheData().getPatient().getLastName());});
+			listOfMonths.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {selectedMonth = newValue; fillSeanceList(); communication.setText("Paiement " + selectedMonth + " " + pane.getCacheData().getPatient().getFirstName() + " " + pane.getCacheData().getPatient().getLastName());});
 			listOfYears.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {selectedYear = newValue; fillSeanceList();});
 			selectedYear = Integer.valueOf(LocalDate.now().getYear());
 			listOfYears.setValue(selectedYear);
