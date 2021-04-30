@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.OptionParametersManagementController">
+   <children>
+      <Label layoutX="14.0" layoutY="6.0" onMouseClicked="#back" text="Retour" underline="true" />
+      <TableView fx:id="parameterTable" layoutX="50.0" layoutY="64.0" prefHeight="374.0" prefWidth="500.0">
+        <columns>
+          <TableColumn fx:id="descriptionColumn" prefWidth="279.0" text="Description" />
+          <TableColumn fx:id="valueColumn" minWidth="0.0" prefWidth="220.0" text="Valeur" />
+        </columns>
+      </TableView>
+      <Button layoutX="274.0" layoutY="455.0" mnemonicParsing="false" onAction="#save" text="Sauver" />
+   </children>
+</AnchorPane>

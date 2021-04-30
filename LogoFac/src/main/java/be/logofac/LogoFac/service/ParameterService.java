@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import be.logofac.LogoFac.domain.AppParameter;
 import be.logofac.LogoFac.domain.AppParameterAmount;
+import be.logofac.LogoFac.domain.AppParameterGeneral;
+import be.logofac.LogoFac.domain.enums.ParameterReference;
 import be.logofac.LogoFac.repository.ParameterRepository;
 
 @Service
@@ -38,6 +40,15 @@ public class ParameterService {
 		
 		return parameterRepository.findAllAmounts();
 		
+	}
+	public List<AppParameterGeneral> findAllGeneral(){
+		
+		return parameterRepository.findAllGeneral();
+		
+	}
+
+	public AppParameterGeneral findGeneralParameter(ParameterReference folderLocation) {
+		return parameterRepository.findByParameterReference(folderLocation);
 	}
 	
 	

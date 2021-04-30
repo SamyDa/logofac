@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 import be.logofac.LogoFac.domain.Adresse;
 import be.logofac.LogoFac.domain.AppParameter;
 import be.logofac.LogoFac.domain.AppParameterAmount;
+import be.logofac.LogoFac.domain.AppParameterGeneral;
 import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Patient;
 import be.logofac.LogoFac.domain.Prix;
 import be.logofac.LogoFac.domain.Professionnel;
 import be.logofac.LogoFac.domain.Seance;
+import be.logofac.LogoFac.domain.enums.ParameterReference;
 import be.logofac.LogoFac.domain.enums.SeanceDuration;
 import be.logofac.LogoFac.domain.enums.SeanceType;
 import be.logofac.LogoFac.service.AdresseService;
@@ -56,13 +58,27 @@ public class InitialLoad {
 	public void initialLoad() {
 		fillParameterTable();
 		fillPrice();
-		fillProfessionnal();
-		fillPatient();
+	//	fillProfessionnal();
+	//	fillPatient();
+		
 	//	fillSeance();
 	//	fillFacture();
 	}
 	
+	private void fillParameter() {
+		AppParameterGeneral appParameterGeneral = new AppParameterGeneral();
+		appParameterGeneral.setParameterReference(ParameterReference.FOLDER_LOCATION);
+		appParameterGeneral.setValue("D:\\Users\\samyd\\Documents");
+		parameterService.save(appParameterGeneral);
+		appParameterGeneral = new AppParameterGeneral();
+		appParameterGeneral.setParameterReference(ParameterReference.INVOICE_OFFSET);
+		appParameterGeneral.setValue(0);
+		parameterService.save(appParameterGeneral);
+		
+	}
+
 	private void fillParameterTable() {
+		fillParameter(); 
 		
 		AppParameterAmount appParameterAmount = new AppParameterAmount(28.33, "Prix seance demi-heure au cabinet ", SeanceType.Cabinet, SeanceDuration.demi_heure);
 		parameterService.save(appParameterAmount);
@@ -76,20 +92,6 @@ public class InitialLoad {
 		parameterService.save(appParameterAmount);
 		appParameterAmount = new AppParameterAmount(56.89, "Prix seance une heure au domicile ", SeanceType.Domicile, SeanceDuration.heure);
 		parameterService.save(appParameterAmount);
-		
-		
-		System.out.println("Table of parameter : ");
-		
-		for(AppParameter param :  parameterService.findAll()) {
-			if(param instanceof AppParameterAmount)
-			System.out.println(" - " + "("+ param.getParamType()+")"+ ((AppParameterAmount) param).getDescription() + "  à " + ((AppParameterAmount) param).getAmount() ) ;
-		}
-		
-		System.out.println("Table of parameter2 : ");
-		
-		for(AppParameterAmount param :  parameterService.findAllAmounts()) {
-			System.out.println(" - " + "("+ param.getParamType()+")"+  param.getDescription() + "  à " + param.getAmount() ) ;
-		}
 		
 	}
 

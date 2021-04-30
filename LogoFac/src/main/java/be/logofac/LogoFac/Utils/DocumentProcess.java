@@ -20,6 +20,7 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 
+import be.logofac.LogoFac.FrontApp;
 import be.logofac.LogoFac.domain.AppParameterAmount;
 import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Patient;
@@ -27,6 +28,7 @@ import be.logofac.LogoFac.domain.Professionnel;
 import be.logofac.LogoFac.domain.Seance;
 import be.logofac.LogoFac.domain.enums.Description;
 import be.logofac.LogoFac.domain.enums.Mois;
+import be.logofac.LogoFac.domain.enums.ParameterReference;
 import be.logofac.LogoFac.domain.enums.SeanceDuration;
 import be.logofac.LogoFac.domain.enums.SeanceType;
 
@@ -43,8 +45,18 @@ public class DocumentProcess {
 	}
 
 	private void createDocument(Facture facture) {
-	    String dest = facture.getReference() + ".pdf";     
+		
+		
+	    String dest = "";
+	    if(FrontApp.serviceCatalog.getParameterService().findGeneralParameter(ParameterReference.FOLDER_LOCATION) != null ) {
+	    	
+	    	dest = FrontApp.serviceCatalog.getParameterService().findGeneralParameter(ParameterReference.FOLDER_LOCATION).getValue().toString();
+	    }
 	    
+	    
+	    
+	    dest = dest + facture.getReference() + ".pdf";     
+	    System.out.println("destination = " + dest);
 		try {
 			  PdfWriter writer = new PdfWriter(dest);
 			  // Creating a PdfDocument       

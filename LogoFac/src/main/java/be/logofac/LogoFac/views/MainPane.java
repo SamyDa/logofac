@@ -1,5 +1,14 @@
 package be.logofac.LogoFac.views;
 
+import java.awt.Desktop;
+import java.awt.FileDialog;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import be.logofac.LogoFac.Controllers.ViewController;
 import be.logofac.LogoFac.Utils.CacheData;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +26,11 @@ public class MainPane extends NavigationPane {
 
 	@Override
 	protected void showInitialPane() {
-		
 		initializeRootLayout();
 		showPane();
 	}
 
+	
 	private void displayMainMenu() {
 		 // then display the first main menu
 		 try {

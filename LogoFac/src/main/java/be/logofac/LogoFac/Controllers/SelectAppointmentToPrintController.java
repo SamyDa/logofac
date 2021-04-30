@@ -13,6 +13,7 @@ import be.logofac.LogoFac.Utils.DocumentProcess;
 import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.Seance;
 import be.logofac.LogoFac.domain.enums.Mois;
+import be.logofac.LogoFac.domain.enums.ParameterReference;
 import be.logofac.LogoFac.views.SelectPersonPane;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -186,6 +187,14 @@ public class SelectAppointmentToPrintController extends ViewController {
 	private Facture createFacture(List<Seance> seances) {
 		int year = seances.get(0).getHourFrom().getYear();
 		int invoiceCount=  FrontApp.serviceCatalog.getFactureService().countInvoiceInTime(LocalDate.of(year, 1, 1), LocalDate.of(year, 12, 31)) + 2;
+		if(FrontApp.serviceCatalog.getParameterService().findGeneralParameter(ParameterReference.INVOICE_OFFSET) != null ) {
+			try {
+				Integer integer =  (Integer) FrontApp.serviceCatalog.getParameterService().findGeneralParameter(ParameterReference.INVOICE_OFFSET).getValue();
+				invoiceCount = invoiceCount + integer;
+			}catch(Exception e) {
+				
+			}
+		}
 		String reference = Facture.createReference(year ,invoiceCount);
 		String communicationText = communication.getText();
 		Facture facture = new Facture(reference, false, pane.getCacheData().getPatient(),  FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get(), communicationText, LocalDate.of(selectedYear, selectedMonth.getMois(), 1), LocalDate.now(), seances);

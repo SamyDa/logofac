@@ -1,5 +1,8 @@
 package be.logofac.LogoFac;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -17,12 +20,14 @@ import be.logofac.LogoFac.service.FactureService;
 import be.logofac.LogoFac.service.SeanceService;
 import be.logofac.LogoFac.service.ServiceCatalog;
 import javafx.stage.Stage;
+import javax.swing.JFileChooser;
+import java.io.File;   
 
 @SpringBootApplication(exclude = { ErrorMvcAutoConfiguration.class, SecurityAutoConfiguration.class })
 public class LogoFacApplication implements CommandLineRunner{
 	
 	private InitialLoad initialLoad;
-	private  DocumentProcess documentProcess;
+	private DocumentProcess documentProcess;
 	private FactureService factureService;
 	private FrontApp app;
 	private ServiceCatalog serviceCatalog;
@@ -46,9 +51,8 @@ public class LogoFacApplication implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) {
-		
-		
-		initialLoad.initialLoad();
+		if( ! (serviceCatalog.getParameterService().findAll().size()> 0 ))
+			initialLoad.initialLoad();
 		
 		new Thread(){
             public void run() {
@@ -57,5 +61,4 @@ public class LogoFacApplication implements CommandLineRunner{
                 }.start();
                 
     	}
-		
 }

@@ -18,6 +18,10 @@ public class ViewNavigator {
 			return retrievePaneFromView(Views.OptionView_ManageProData); 
 		}
 		
+		if(option.equals(Options.AppGenParameters)) {
+			return retrievePaneFromView(Views.OptionView_ManageParameter);
+		}
+		
 		return null;
 	}
 	

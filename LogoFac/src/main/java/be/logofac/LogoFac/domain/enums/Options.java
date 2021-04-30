@@ -2,7 +2,9 @@ package be.logofac.LogoFac.domain.enums;
 
 public enum Options {
 	
-	PatientManagement("Gestion des patients"), ProManagement("Gestion des données professionnelles");
+	PatientManagement("Gestion des patients"), 
+	ProManagement("Gestion des données professionnelles"), 
+	AppGenParameters("Gestion des paramètres généraux");
 	
 	private String description;
 
