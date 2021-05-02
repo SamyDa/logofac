@@ -55,7 +55,7 @@ public class DocumentProcess {
 	    
 	    
 	    
-	    dest = dest +  getFileName(facture) +facture.getReference() + ".pdf";     
+	    dest = dest +  getFileName(facture) + ".pdf";     
 	    System.out.println("destination = " + dest);
 		try {
 			  PdfWriter writer = new PdfWriter(dest);
