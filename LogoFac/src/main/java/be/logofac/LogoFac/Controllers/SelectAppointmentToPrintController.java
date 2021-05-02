@@ -67,7 +67,7 @@ public class SelectAppointmentToPrintController extends ViewController {
 			pane.setNavigatedPane(new SelectPersonPane(pane));
 		else {
 			
-			listOfMonths.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {selectedMonth = newValue; fillSeanceList(); communication.setText("Paiement " + selectedMonth + " " + pane.getCacheData().getPatient().getFirstName() + " " + pane.getCacheData().getPatient().getLastName());});
+			listOfMonths.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {selectedMonth = newValue; fillSeanceList(); communication.setText("Paiement " + selectedMonth + " " + pane.getCacheData().getPatient().getFirstName() + " " + pane.getCacheData().getPatient().getLastName()+ " - " + getReference());});
 			listOfYears.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {selectedYear = newValue; fillSeanceList();});
 			selectedYear = Integer.valueOf(LocalDate.now().getYear());
 			listOfYears.setValue(selectedYear);
@@ -187,7 +187,18 @@ public class SelectAppointmentToPrintController extends ViewController {
 	}
 
 	private Facture createFacture(List<Seance> seances) {
-		int year = seances.get(0).getHourFrom().getYear();
+		String reference = getReference();
+		String communicationText = communication.getText() ;
+		Facture facture = new Facture(reference, false, pane.getCacheData().getPatient(),  FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get(), communicationText, LocalDate.of(selectedYear, selectedMonth.getMois(), 1), LocalDate.now(), seances);
+		
+		
+		return facture;
+		
+	}
+	
+	private String getReference() {
+		
+		int year = listOfYears.getSelectionModel().getSelectedItem();
 		int invoiceCount=  FrontApp.serviceCatalog.getFactureService().countInvoiceInTime(LocalDate.of(year, 1, 1), LocalDate.of(year, 12, 31)) + 2;
 		if(FrontApp.serviceCatalog.getParameterService().findGeneralParameter(ParameterReference.INVOICE_OFFSET) != null ) {
 			try {
@@ -198,12 +209,8 @@ public class SelectAppointmentToPrintController extends ViewController {
 			}
 		}
 		String reference = Facture.createReference(year ,invoiceCount);
-		String communicationText = communication.getText();
-		Facture facture = new Facture(reference, false, pane.getCacheData().getPatient(),  FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get(), communicationText, LocalDate.of(selectedYear, selectedMonth.getMois(), 1), LocalDate.now(), seances);
 		
-		
-		return facture;
-		
+		return reference;
 	}
 
 }

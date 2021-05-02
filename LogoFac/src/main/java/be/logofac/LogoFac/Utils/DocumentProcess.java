@@ -55,7 +55,7 @@ public class DocumentProcess {
 	    
 	    
 	    
-	    dest = dest + facture.getReference() + ".pdf";     
+	    dest = dest +  getFileName(facture) +facture.getReference() + ".pdf";     
 	    System.out.println("destination = " + dest);
 		try {
 			  PdfWriter writer = new PdfWriter(dest);
@@ -91,6 +91,11 @@ public class DocumentProcess {
 		
 	}
 	
+	private String getFileName(Facture facture) {
+		
+		return facture.getReference() + "_" + facture.getApplicationDate().getMonth()+"_"+facture.getPatient().getFirstName()+"_"+facture.getPatient().getLastName();
+	}
+
 	private void addBreakLine(Document document, int i) {
 		
 		for(int j = 0 ; j<i; j++)
