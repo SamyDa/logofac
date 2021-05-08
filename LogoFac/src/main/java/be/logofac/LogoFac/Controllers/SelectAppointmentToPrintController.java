@@ -49,6 +49,9 @@ public class SelectAppointmentToPrintController extends ViewController {
     private ComboBox<Mois> listOfMonths;
     @FXML
     private ComboBox<Integer> listOfYears;
+    @FXML
+    private CheckBox sendEmail;
+    
     
 
 	private ObservableList<Seance> seanceObsist;
@@ -170,9 +173,8 @@ public class SelectAppointmentToPrintController extends ViewController {
 		System.out.println("size of selected seances =   " + selectedSeances.size() );
 		
 		if(selectedSeances.size() > 0) {
-		
-			
 			DocumentProcess docProcess  = new DocumentProcess() ;
+			docProcess.setSendEmail(sendEmail.isSelected());
 			Facture facture = createFacture(selectedSeances);
 			docProcess.loadDocumentData(facture);
 			facture.setPrinted(true);

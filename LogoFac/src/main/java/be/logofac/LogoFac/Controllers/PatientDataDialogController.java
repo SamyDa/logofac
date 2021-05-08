@@ -26,9 +26,10 @@ public class PatientDataDialogController extends ViewController {
 	private TextField paysField;
 	@FXML
 	private TextField numeroField;
+//	@FXML
+//	private DatePicker birthdateField;
 	@FXML
-	private DatePicker birthdateField;
-	
+	private TextField emailField;
 	
 	@Override
 	public void loadControllerLogic() {
@@ -42,7 +43,7 @@ public class PatientDataDialogController extends ViewController {
 			codePostalField.setText(String.valueOf(pane.getCacheData().getSelectedPatient().getAdresse().getPostalCode()));
 			paysField.setText(pane.getCacheData().getSelectedPatient().getAdresse().getCountry());
 			numeroField.setText(pane.getCacheData().getSelectedPatient().getAdresse().getHouseNumber());
-			birthdateField.setValue(pane.getCacheData().getSelectedPatient().getBirthdate() );
+			emailField.setText(pane.getCacheData().getSelectedPatient().getEmail());
 		}
 	}
 	
@@ -80,15 +81,14 @@ public class PatientDataDialogController extends ViewController {
 		if(pane.getCacheData().getSelectedPatient() == null){
 			
 			Adresse adresse = new Adresse(rueField.getText(), villeField.getText(), numeroField.getText(), postalC, paysField.getText());
-			patient = new Patient(prenomField.getText(), nomField.getText(),  birthdateField.getValue(), adresse);
+			patient = new Patient(prenomField.getText(), nomField.getText(), null, emailField.getText(),adresse);
 		}
 		else {
 			
 			patient = pane.getCacheData().getSelectedPatient();
-			patient.setBirthdate( birthdateField.getValue());
 			patient.setFirstName(prenomField.getText());
 			patient.setLastName(nomField.getText());
-			
+			patient.setEmail(emailField.getText());
 			patient.getAdresse().setCity(villeField.getText());
 			patient.getAdresse().setCountry(paysField.getText());
 			patient.getAdresse().setHouseNumber( numeroField.getText());
@@ -111,7 +111,8 @@ public class PatientDataDialogController extends ViewController {
 				paysField.getText().isEmpty() ||paysField.getText().isBlank() || 
 				numeroField.getText().isEmpty() ||numeroField.getText().isBlank() || 
 				codePostalField.getText().isEmpty() ||codePostalField.getText().isBlank() || 
-				birthdateField.getValue() == null)
+				emailField.getText().isEmpty() || emailField.getText().isBlank()
+				 )
 			return true;
 		else	
 			return false;

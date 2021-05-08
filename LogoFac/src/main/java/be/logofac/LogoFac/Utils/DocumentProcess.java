@@ -37,11 +37,21 @@ public class DocumentProcess {
 
 	private static final String BREAK_LINE = "\n";
 	private double total = 0 ;
+	private boolean sendEmail = false;
+	
 	public void loadDocumentData(Facture facture) {
 		
 		System.out.println("Load documents ");
 		createDocument(facture);
 		
+	}
+	
+	public boolean isSendEmail() {
+		return sendEmail;
+	}
+
+	public void setSendEmail(boolean sendEmail) {
+		this.sendEmail = sendEmail;
 	}
 
 	private void createDocument(Facture facture) {
@@ -85,6 +95,19 @@ public class DocumentProcess {
 		      document.close();              
 		      System.out.println("PDF Created");    
 		      facture.setPrinted(true);
+		      
+		      if(sendEmail && dest !=null && !dest.isEmpty()) {
+		    	  
+		    	  String title = "Titre test";
+		    	  String messageText = "message test";
+		    	  MailUtil mailUtil = new MailUtil(title, messageText, dest);
+		    	  mailUtil.setCcAdresse(facture.getProfessionnel().getEmail());
+		    	  mailUtil.setRecipient(facture.getPatient().getEmail());
+		    	  mailUtil.setFileName(getFileName(facture));
+		    	  mailUtil.sendEmail();
+		    	  
+		      }
+		      
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} 

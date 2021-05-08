@@ -19,6 +19,7 @@ public class Patient {
 	private String firstName ; 
 	private String lastName;
 	private LocalDate birthdate;
+	private String email;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn( name =  "fk_adresse")
@@ -30,11 +31,12 @@ public class Patient {
 		super();
 	}
 
-	public Patient ( String firstName, String lastName,  LocalDate birthdate, Adresse adresse) {
+	public Patient ( String firstName, String lastName,  LocalDate birthdate, String email, Adresse adresse) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthdate = birthdate;
+		this.email = email;
 		this.adresse = adresse;
 	}
 
@@ -80,6 +82,14 @@ public class Patient {
 
 	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

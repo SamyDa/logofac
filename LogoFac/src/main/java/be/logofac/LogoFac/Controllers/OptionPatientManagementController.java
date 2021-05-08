@@ -35,7 +35,7 @@ public class OptionPatientManagementController extends ViewController {
 	@FXML
 	private Label nom;
 	@FXML
-	private Label age;
+	private Label email;
 	@FXML
 	private Label id;
 	@FXML
@@ -69,26 +69,26 @@ public class OptionPatientManagementController extends ViewController {
 	}
 	
 	private void showPatientDetails(Patient patient) {
-		String birth = "";
-		String ageStr = ""; 
-		if (patient.getBirthdate() == null)
-		{
-			birth ="01-01-0001";
-			ageStr = "0 ans";
-		}
-		else {
-			birth = patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
-			
-			if(patient.getBirthdate().plusYears(LocalDate.now().getYear()-patient.getBirthdate().getYear()).isAfter(LocalDate.now()))
-				ageStr = String.valueOf(LocalDate.now().getYear()-patient.getBirthdate().getYear()-1) + " ans";
-			else
-				ageStr = String.valueOf(LocalDate.now().getYear()-patient.getBirthdate().getYear()) + " ans";
-			
-		}
+//		String birth = "";
+//		String ageStr = ""; 
+//		if (patient.getBirthdate() == null)
+//		{
+//			birth ="01-01-0001";
+//			ageStr = "0 ans";
+//		}
+//		else {
+//			birth = patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
+//			
+//			if(patient.getBirthdate().plusYears(LocalDate.now().getYear()-patient.getBirthdate().getYear()).isAfter(LocalDate.now()))
+//				ageStr = String.valueOf(LocalDate.now().getYear()-patient.getBirthdate().getYear()-1) + " ans";
+//			else
+//				ageStr = String.valueOf(LocalDate.now().getYear()-patient.getBirthdate().getYear()) + " ans";
+//			
+//		}
 		prenom.setText(patient.getFirstName()); 
 		nom.setText(patient.getLastName()); 
 		id.setText(String.valueOf(patient.patientId)); 
-		age.setText(ageStr + " ("+birth+")"); 
+		email.setText(patient.getEmail()); 
 		rue.setText(patient.getAdresse().getStreet()); 
 		numero.setText(patient.getAdresse().getHouseNumber()); 
 		ville.setText(patient.getAdresse().getCity()); 

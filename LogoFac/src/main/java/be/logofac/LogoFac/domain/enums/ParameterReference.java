@@ -3,8 +3,7 @@ package be.logofac.LogoFac.domain.enums;
 public enum ParameterReference {
 	
 	FOLDER_LOCATION("Destination fichiers pdf" , String.valueOf("")),
-	INVOICE_OFFSET("Décalage référnce facture" , Integer.valueOf(0) )
-	;
+	INVOICE_OFFSET("Décalage référnce facture" , Integer.valueOf(0) );
 
 	String name; 
 	Object instance;
@@ -22,8 +21,4 @@ public enum ParameterReference {
 	public Object getInstance() {
 		return instance;
 	}
-	
-	
-	
-
 }
