@@ -75,6 +75,7 @@ public class InitialLoad {
 		appParameterGeneral.setValue(0);
 		parameterService.save(appParameterGeneral);
 		
+		
 	}
 
 	private void fillParameterTable() {

@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.kernel.color.Color;
@@ -65,7 +64,7 @@ public class DocumentProcess {
 	    
 	    
 	    
-	    dest = dest +  getFileName(facture) + ".pdf";     
+	    dest = dest +  getFileName(facture) ;     
 	    System.out.println("destination = " + dest);
 		try {
 			  PdfWriter writer = new PdfWriter(dest);
@@ -98,12 +97,46 @@ public class DocumentProcess {
 		      
 		      if(sendEmail && dest !=null && !dest.isEmpty()) {
 		    	  
-		    	  String title = "Titre test";
-		    	  String messageText = "message test";
+		    	  String title = "Facture honoraires séances logopédiques ";
+		    	  for(Mois mois : Mois.values()) {
+		    		  if(mois.getMois() == facture.getApplicationDate().getMonthValue()) {
+		    			  	title = title + mois;
+		    			  
+		    		  }
+		    		  
+		    	  }  
+		    	  
+		    	  String messageText = "Bonjour,\n"
+		    	  		+ "\n"
+		    	  		+ "Ci-joint, vous trouverez la facture des honoraires du mois ";
+		    	  
+		    	  for(Mois mois : Mois.values()) {
+		    		  
+		    		  if(mois.getMois() == facture.getApplicationDate().getMonthValue()) {
+		    			  
+		    			  if(String.valueOf(mois).toLowerCase().charAt(0) == 'a' || String.valueOf(mois).toLowerCase().charAt(0) == 'o')
+		    				  messageText = messageText + "d'" + mois;
+		    			  else
+		    				  messageText = messageText + "de " + mois;
+		    			  
+		    			  break;
+		    			  
+		    		  }
+		    	  }
+		    	  messageText = messageText+ " . \n"
+		    	  		+ "\n"
+		    	  		+ "En vous en souhaitant bonne réception, \n"
+		    	  		+ "Cordialement,\n"
+		    	  		+ "\n"
+		    	  		+ facture.getProfessionnel().getFirstName() + " " + facture.getProfessionnel().getLastName() +"\n"
+		    	  		+ facture.getProfessionnel().getProfession() + "\n"
+		    	  		//+ addColor("Ceci est un mail automatique, merci de ne pas y répondre. En cas de besoin, contactez-moi à l'adresse mail suivante : ", java.awt.Color.RED) + facture.getProfessionnel().getEmail();
+		    	  		+ "Ceci est un mail automatique, merci de ne pas y répondre. En cas de besoin, contactez-moi à l'adresse mail suivante : " + facture.getProfessionnel().getEmail();
+		    	  
 		    	  MailUtil mailUtil = new MailUtil(title, messageText, dest);
 		    	  mailUtil.setCcAdresse(facture.getProfessionnel().getEmail());
 		    	  mailUtil.setRecipient(facture.getPatient().getEmail());
-		    	  mailUtil.setFileName(getFileName(facture));
+		    	  mailUtil.setFileName(getFileName(facture) + ".pdf");
 		    	  mailUtil.sendEmail();
 		    	  
 		      }
@@ -115,8 +148,17 @@ public class DocumentProcess {
 	}
 	
 	private String getFileName(Facture facture) {
+		String moisStr ="";
 		
-		return facture.getReference() + "_" + facture.getApplicationDate().getMonth()+"_"+facture.getPatient().getFirstName()+"_"+facture.getPatient().getLastName();
+		for(Mois mois : Mois.values()) {
+			
+			if(mois.getMois() == facture.getApplicationDate().getMonthValue()) {
+				moisStr = String.valueOf(mois);
+			
+			}
+				
+		}
+		return facture.getReference() + "_" + moisStr+"_"+facture.getPatient().getFirstName()+"_"+facture.getPatient().getLastName()+".pdf";
 	}
 
 	private void addBreakLine(Document document, int i) {
@@ -328,5 +370,11 @@ public class DocumentProcess {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setMarginLeft(margin);
 		return cell;
+	}
+	
+	private String addColor(String msg, java.awt.Color color) {
+	    String hexColor = String.format("#%06X",  (0xFFFFFF & color.getRGB()));
+	    String colorMsg = " <font color=\"#" + hexColor + "\">" + msg + "</font>";
+	    return colorMsg;
 	}
 }
