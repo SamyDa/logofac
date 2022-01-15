@@ -5,6 +5,7 @@ import be.logofac.LogoFac.Utils.ViewNavigator;
 import be.logofac.LogoFac.domain.enums.Options;
 import be.logofac.LogoFac.views.AddAppointmentPane;
 import be.logofac.LogoFac.views.ConsultAppointmentPane;
+import be.logofac.LogoFac.views.ListInvoicePane;
 import be.logofac.LogoFac.views.NavigationPane;
 import be.logofac.LogoFac.views.SelectAppointmentToPrintPane;
 import be.logofac.LogoFac.views.SelectOptionPane;
@@ -39,6 +40,13 @@ public class FirstMenuController extends ViewController {
 		pane.setNavigatedPane( new SelectOptionPane(pane));
 		
 	}
+	
+	@FXML
+	private void regenerateInvoice() {
+		pane.setNavigatedPane( new ListInvoicePane(pane));
+		
+	}
+	
 
 	
 	@Override

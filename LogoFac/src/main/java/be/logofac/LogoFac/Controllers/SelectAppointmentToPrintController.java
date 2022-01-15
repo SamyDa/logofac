@@ -117,11 +117,7 @@ public class SelectAppointmentToPrintController extends ViewController {
             }
         });
 		}
-		
-		
     }
-	
-	
 
 	private void fillYearList() {
 		
@@ -193,9 +189,7 @@ public class SelectAppointmentToPrintController extends ViewController {
 		String communicationText = communication.getText() ;
 		Facture facture = new Facture(reference, false, pane.getCacheData().getPatient(),  FrontApp.serviceCatalog.getProfessionnelService().findAllPro().stream().findFirst().get(), communicationText, LocalDate.of(selectedYear, selectedMonth.getMois(), 1), LocalDate.now(), seances);
 		
-		
 		return facture;
-		
 	}
 	
 	private String getReference() {

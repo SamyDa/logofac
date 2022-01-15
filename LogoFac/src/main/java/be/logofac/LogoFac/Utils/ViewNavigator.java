@@ -11,7 +11,6 @@ public class ViewNavigator {
 		
 		if(option.equals(Options.PatientManagement)) {
 			return retrievePaneFromView(Views.OptionView_ManagePatientData);
-			
 		}
 		
 		if(option.equals(Options.ProManagement)) {

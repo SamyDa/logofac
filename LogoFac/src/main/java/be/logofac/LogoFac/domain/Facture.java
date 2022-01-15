@@ -37,6 +37,8 @@ public class Facture {
 	
 	private LocalDate creationDate;
 	
+	private LocalDate modificationDate;
+	
 	@ManyToMany(fetch = FetchType.EAGER )
 	@JoinTable( name = "jnd_FactSeance" , joinColumns = @JoinColumn(name = "facture_fk") ,inverseJoinColumns = @JoinColumn( name = "seance_fk") )
 	private List<Seance> seances;
