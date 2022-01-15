@@ -4,6 +4,23 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# eclipse specific git ignore
+*.pydevproject
+.project
+.metadata
+logofacdb/**
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
 ### STS ###
 .apt_generated
 .classpath
