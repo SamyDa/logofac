@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
@@ -36,6 +37,11 @@ public class AddDateController extends ViewController {
 	private TableView<Seance> newAppointmentList;
 	@FXML
 	private TableColumn<Seance, String> seanceDescription;
+	@FXML
+	private CheckBox cancellation;
+	@FXML
+	private CheckBox thirdPartyPayment;
+	
 	
 	
 	List<LocalTime> timeList = new ArrayList<LocalTime>();
@@ -47,18 +53,28 @@ public class AddDateController extends ViewController {
 	public AddDateController() {
 		
 		super();	
-		 
+		fillTimeList();
+		timeList.sort((x1 , x2 ) -> {if(x1.isAfter(x2)) return -1; else return 1;});
+		fillSeanceDuration();
+		fillSeanceType();
+	}
+
+	private void fillSeanceType() {
+		for(SeanceType type : SeanceType.values())
+			seanceTypeList.add(type);
+	}
+
+	private void fillSeanceDuration() {
+		for(SeanceDuration seance :  SeanceDuration.values())
+			duration.add(seance.getDescrption());
+	}
+
+	private void fillTimeList() {
 		LocalTime time = LocalTime.of(8, 0);
 		while(time.isBefore(LocalTime.of(19, 0))) {
 			timeList.add(LocalTime.of(time.getHour(), time.getMinute()));
 			time = time.plusMinutes(30);
 		}
-		timeList.sort((x1 , x2 ) -> {if(x1.isAfter(x2)) return -1; else return 1;});
-		for(SeanceDuration seance :  SeanceDuration.values())
-			duration.add(seance.getDescrption());
-		
-		for(SeanceType type : SeanceType.values())
-			seanceTypeList.add(type);
 	}
 	
 	@FXML
@@ -82,7 +98,9 @@ public class AddDateController extends ViewController {
 		}
 		
 		LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), availableTimeslotList.getValue());
-		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, seanceType.getValue());
+		System.out.println("Checkboxes : " + cancellation.isSelected()  ); 
+		System.out.println("Checkboxes : " + thirdPartyPayment.isSelected()  ); 
+		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, seanceType.getValue(), thirdPartyPayment.isSelected(), cancellation.isSelected());
 		seanceList.add(seance);
 		obsSeanceList = FXCollections.observableList(seanceList);
 		newAppointmentList.setItems(obsSeanceList);

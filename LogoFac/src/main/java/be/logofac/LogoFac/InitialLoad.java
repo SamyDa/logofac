@@ -130,7 +130,7 @@ public class InitialLoad {
 		if(patient.isPresent()) {
 			Optional<Professionnel> professionnel = professionnelService.findAllPro().stream().findFirst();
 			if (professionnel.isPresent()) {
-				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2021, 12, 1), LocalTime.of(14, 30)), SeanceDuration.demi_heure, SeanceType.Cabinet
+				Seance seance = new Seance( patient.get(), professionnel.get(), LocalDateTime.of(LocalDate.of(2021, 12, 1), LocalTime.of(14, 30)), SeanceDuration.demi_heure, SeanceType.Cabinet, false, false
 						);
 	   			seanceService.save(seance);
 				seanceService.findAllSeance().forEach(n -> System.out.println(n.toString()));

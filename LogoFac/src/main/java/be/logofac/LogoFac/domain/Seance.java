@@ -31,29 +31,51 @@ public class Seance {
 	private SeanceType seanceType;
 	
 	private Boolean toPrint;
+	
+	private Boolean isThirdPartyPayment; 
+	private Boolean isCancelled;
 
 	
 	public Seance() {
 		super();
 	}
 
-
 	public Seance(Patient patient, Professionnel professionnel, LocalDateTime hourFrom, SeanceDuration hourNumber,
-			SeanceType seanceType) {
+			SeanceType seanceType, Boolean isThirdPartyPayment, Boolean isCancelled) {
 		super();
 		this.patient = patient;
 		this.professionnel = professionnel;
 		this.hourFrom = hourFrom;
 		this.hourNumber = hourNumber;
 		this.seanceType = seanceType;
+		this.isThirdPartyPayment = isThirdPartyPayment;
+		this.isCancelled = isCancelled;
 	}
-
 
 	@Override
 	public String toString() {
 		return "Seance [seanceId=" + seanceId + ", patient=" + patient + ", professionnel=" + professionnel
 				+ ", hourFrom=" + hourFrom + ", hourNumber=" + hourNumber + "]";
 		
+	}
+
+	public Boolean getIsThirdPartyPayment() {
+		return isThirdPartyPayment;
+	}
+
+
+	public void setIsThirdPartyPayment(Boolean isThirdPartyPayment) {
+		this.isThirdPartyPayment = isThirdPartyPayment;
+	}
+
+
+	public Boolean getIsCancelled() {
+		return isCancelled;
+	}
+
+
+	public void setIsCancelled(Boolean isCancelled) {
+		this.isCancelled = isCancelled;
 	}
 
 

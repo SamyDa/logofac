@@ -190,9 +190,17 @@ public class DocumentProcess {
 	}
 
 	private void addSeanceAndAmounts(Table table, Facture facture) {
-		String text = "";
-		//Need to separate the description between hours and 
 		
+		List<Seance> seanceList =  facture.getSeances().stream().filter(n-> !n.getIsCancelled()).collect(Collectors.toList()) ;
+		total = AddCommonSeancesAndGetTotal( table,  facture) ;
+		total = total + AddCommonSeancesAndGetTotal(table,  facture);
+		
+		table.addCell(getCell("\n" , TextAlignment.LEFT));
+		table.addCell(getCell("\n" , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
+	}
+
+	private double AddCommonSeancesAndGetTotal(Table table, List<Seance> seanceList) {
+		String text = "";
 		for(SeanceDuration seanceDuration : SeanceDuration.values()) {
 			
 			List<Seance> filteredSeances = facture.getSeances().stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
@@ -201,9 +209,6 @@ public class DocumentProcess {
 				List<Seance> secondFilteredSeances = filteredSeances.stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
 				text = "";
 				if(secondFilteredSeances.size() > 0 ) {
-					
-					// Add the description 
-					
 					if(secondFilteredSeances.size() == 1) {
 						String duration = "";
 						if (seanceDuration.getDescrption().toLowerCase().toCharArray()[0] == 'u') 
@@ -232,13 +237,8 @@ public class DocumentProcess {
 					}
 				}
 			}
-			
 		}
-		
-		//add 2 final cells for estethic
-		table.addCell(getCell("\n" , TextAlignment.LEFT));
-		table.addCell(getCell("\n" , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
-		
+		return 0;
 	}
 
 	private void addTableFirstCell(Table table, Facture facture) {

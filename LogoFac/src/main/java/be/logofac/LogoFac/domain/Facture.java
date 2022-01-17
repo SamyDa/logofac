@@ -146,6 +146,14 @@ public class Facture {
 	
 	
 
+	public LocalDate getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(LocalDate modificationDate) {
+		this.modificationDate = modificationDate;
+	}
+
 	public static String createReference(int year, int invoiceCount) {
 		// TODO Auto-generated method stub
 		return year + "-" + invoiceCount;

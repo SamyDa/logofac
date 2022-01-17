@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.logofac.LogoFac.FrontApp;
+import be.logofac.LogoFac.Utils.CacheData;
+import be.logofac.LogoFac.Utils.DocumentProcess;
 import be.logofac.LogoFac.Utils.ViewNavigator;
 import be.logofac.LogoFac.domain.Facture;
 import be.logofac.LogoFac.domain.enums.Options;
@@ -40,9 +42,7 @@ public class InvoiceListController extends ViewController {
 	@Override
 	public void loadControllerLogic() {
 		fillInvoiceList();
-		
 		fillTableView();
-		
 	}
 	
 	
@@ -52,7 +52,6 @@ public class InvoiceListController extends ViewController {
 		invoiceReference.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getReference()));
 		applicationDate.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getApplicationDate().toString()));
 		patientName.setCellValueFactory(cell -> new SimpleStringProperty(getPatientNameFromInvoice(cell.getValue())));
-		
 		invoiceTable.getSelectionModel().selectedItemProperty().addListener(
 	            (observable, oldValue, newValue) -> updateSelectedInvoice(newValue));
 		
@@ -78,9 +77,8 @@ public class InvoiceListController extends ViewController {
 	
 	@FXML
 	private void nextActionB() {
-		
 		if(selectedInvoice == null) return ;
-		
+		pane.getCacheData().setSelectedInvoice(selectedInvoice);
 		NavigationPane pane = new InvoiceDetailPane() ; 
 		pane.setParentPane(this.pane);
 		pane.showPane();
@@ -89,6 +87,15 @@ public class InvoiceListController extends ViewController {
 	@FXML
 	private void back() {
 		pane.returnBack();
+	}
+	
+	@FXML
+	private void regenerateDocument() {
+		
+		DocumentProcess doc = new DocumentProcess();
+		if(selectedInvoice == null) return ;
+		FrontApp.serviceCatalog.getFactureService().fetchLazyAttributes(selectedInvoice);
+		doc.loadDocumentData(selectedInvoice);
 	}
 	
 }
