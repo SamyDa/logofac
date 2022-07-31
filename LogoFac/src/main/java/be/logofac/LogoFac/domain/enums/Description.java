@@ -14,8 +14,8 @@ public enum Description {
 		return description;
 	}
 	
-	public String getDescription( Mois mois) {
-		String text = "Honoraires pour le mois ";
+	public String getDescription( String initialText , Mois mois) {
+		String text = initialText +  " du mois ";
 		if(mois.name().toCharArray()[0] == 'A' || mois.name().toCharArray()[0] == 'O')
 			text = text + "d'" + mois.name();
 		else

@@ -30,10 +30,11 @@ public class Seance {
 	private SeanceDuration hourNumber;
 	private SeanceType seanceType;
 	
-	private Boolean toPrint;
+	private Boolean toPrint = false;
 	
 	private Boolean isThirdPartyPayment; 
 	private Boolean isCancelled;
+	private Boolean isBim ; 
 
 	
 	public Seance() {
@@ -133,6 +134,9 @@ public class Seance {
 	}
 
 	public SeanceType getSeanceType() {
+		if(isBim)
+			return seanceType.getBimEquivalent();
+		
 		return seanceType;
 	}
 
@@ -150,6 +154,14 @@ public class Seance {
 	public void setToPrint(boolean seanceInvoiced) {
 		toPrint = seanceInvoiced;
 		
+	}
+
+	public Boolean getIsBim() {
+		return isBim;
+	}
+
+	public void setIsBim(Boolean isBim) {
+		this.isBim = isBim;
 	} 
 	
 	

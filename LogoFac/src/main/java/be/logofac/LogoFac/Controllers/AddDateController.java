@@ -41,7 +41,8 @@ public class AddDateController extends ViewController {
 	private CheckBox cancellation;
 	@FXML
 	private CheckBox thirdPartyPayment;
-	
+	@FXML
+	private CheckBox bim;
 	
 	
 	List<LocalTime> timeList = new ArrayList<LocalTime>();
@@ -60,8 +61,10 @@ public class AddDateController extends ViewController {
 	}
 
 	private void fillSeanceType() {
-		for(SeanceType type : SeanceType.values())
-			seanceTypeList.add(type);
+		for(SeanceType type : SeanceType.values()) {
+			if(type.isToShow())
+				seanceTypeList.add(type);
+		}
 	}
 
 	private void fillSeanceDuration() {
@@ -101,37 +104,37 @@ public class AddDateController extends ViewController {
 		System.out.println("Checkboxes : " + cancellation.isSelected()  ); 
 		System.out.println("Checkboxes : " + thirdPartyPayment.isSelected()  ); 
 		Seance seance = new Seance(pane.getCacheData().getPatient(), pro, dateTime, seanceDuration, seanceType.getValue(), thirdPartyPayment.isSelected(), cancellation.isSelected());
+		seance.setIsBim(bim.isSelected());
 		seanceList.add(seance);
 		obsSeanceList = FXCollections.observableList(seanceList);
 		newAppointmentList.setItems(obsSeanceList);
-	
 	}
 
 	public void loadControllerLogic() {
 		// if the patient has not been selected, the controller navigate to that pane
-		if(pane.getCacheData().getPatient() == null)
+		if(pane.getCacheData().getPatient() == null) {
 			pane.setNavigatedPane(new SelectPersonPane(pane));
-		availableTimeslotList.setItems( FXCollections.observableList(timeList));
-		seanceType.setItems(FXCollections.observableList(seanceTypeList));
-		durationList.setItems(FXCollections.observableList(duration));
-		seanceType.setValue(SeanceType.Cabinet);
-		seanceDescription.setCellValueFactory(cell ->  new SimpleStringProperty(cell.getValue().getHourFrom().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm ")) + " ("+cell.getValue().getHourNumber().getDescrption()+" " + cell.getValue().getSeanceType().getSeanceString()+")"));
-		
+		}
+		else {
+			availableTimeslotList.setItems( FXCollections.observableList(timeList));
+			seanceType.setItems(FXCollections.observableList(seanceTypeList));
+			durationList.setItems(FXCollections.observableList(duration));
+			seanceType.setValue(SeanceType.Cabinet);
+			seanceDescription.setCellValueFactory(cell ->  new SimpleStringProperty(cell.getValue().getHourFrom().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm ")) + " ("+cell.getValue().getHourNumber().getDescrption()+" " + cell.getValue().getSeanceType().getSeanceString()+")"));
+			System.out.println("Bim : " + pane.getCacheData().getPatient().isBim());
+			bim.setSelected(pane.getCacheData().getPatient().isBim());
+		}
 	}
 	
 	@FXML 
 	private void saveList() {
 		seanceList.forEach(n -> FrontApp.serviceCatalog.getSeanceService().save(n));
 		pane.returnBack();
-		
 	}
 	
 	@FXML 
 	private void deleteAppointment() {
 		seanceList.remove(newAppointmentList.getSelectionModel().getSelectedItem());
 		obsSeanceList = FXCollections.observableList(seanceList);
-		
-		
 	}
-	
 }

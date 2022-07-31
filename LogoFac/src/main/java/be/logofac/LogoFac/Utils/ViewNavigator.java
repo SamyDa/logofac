@@ -6,7 +6,6 @@ import be.logofac.LogoFac.views.NavigationPane;
 
 public class ViewNavigator {
 	
-	
 	public NavigationPane getViewFromInputOption(Options option) {
 		
 		if(option.equals(Options.PatientManagement)) {
@@ -21,12 +20,13 @@ public class ViewNavigator {
 			return retrievePaneFromView(Views.OptionView_ManageParameter);
 		}
 		
+		if(option.equals(Options.AmountManagement))
+			return retrievePaneFromView(Views.OptionView_ManageAmount);
+		
 		return null;
 	}
 	
 	public NavigationPane retrievePaneFromView(Views view) {
-		
-		
 		try {
 			NavigationPane navigationPane =(NavigationPane) view.getPane().newInstance();
 			return navigationPane;
@@ -37,8 +37,5 @@ public class ViewNavigator {
 		}
 		return null;
 	}
-	
-	
-	
 
 }

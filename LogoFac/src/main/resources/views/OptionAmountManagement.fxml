@@ -6,13 +6,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.OptionParametersManagementController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.logofac.LogoFac.Controllers.OptionParametersAmountController">
    <children>
       <Label layoutX="14.0" layoutY="6.0" onMouseClicked="#back" text="Retour" underline="true" />
       <TableView fx:id="parameterTable" layoutX="50.0" layoutY="64.0" prefHeight="374.0" prefWidth="500.0">
         <columns>
-          <TableColumn fx:id="descriptionColumn" prefWidth="279.0" text="Description" />
-          <TableColumn fx:id="valueColumn" minWidth="0.0" prefWidth="220.0" text="Valeur" />
+          <TableColumn fx:id="typeColumn" prefWidth="123.0" text="Type" />
+          <TableColumn fx:id="durationColumn" minWidth="0.0" prefWidth="99.0" text="Durée" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="160.0" text="Description" />
+            <TableColumn fx:id="amountColumn" prefWidth="116.0" text="Montant" />
         </columns>
       </TableView>
       <Button layoutX="274.0" layoutY="455.0" mnemonicParsing="false" onAction="#save" text="Sauver" />

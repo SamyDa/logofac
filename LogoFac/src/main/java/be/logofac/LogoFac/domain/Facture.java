@@ -1,5 +1,9 @@
 package be.logofac.LogoFac.domain;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+
+import be.logofac.LogoFac.domain.enums.SeanceType;
 
 
 @Entity
@@ -60,10 +66,15 @@ public class Facture {
 		this.seances = seances;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Facture [factureId=" + factureId + ", reference=" + reference + ", patient=" + patient.toString()
 				+ ", communication=" + communication + ", seances=" + seances.toString() + "]";
+	}
+	
+	public boolean isBilan(){
+		return seances.stream().filter(seance ->  Arrays.asList(SeanceType.Bilan_Cabinet , SeanceType.Bilan_Domicile).contains(seance.getSeanceType())).toList().size()>0;
 	}
 
 	public int getFactureId() {

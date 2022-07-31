@@ -24,23 +24,22 @@ public class Patient {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn( name =  "fk_adresse")
 	private Adresse adresse;
-	
+	private boolean isBim = false;
 	
 
 	public Patient() {
 		super();
 	}
 
-	public Patient ( String firstName, String lastName,  LocalDate birthdate, String email, Adresse adresse) {
+	public Patient ( String firstName, String lastName,  LocalDate birthdate, String email, Adresse adresse, boolean isBim) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthdate = birthdate;
 		this.email = email;
 		this.adresse = adresse;
+		this.isBim = isBim;
 	}
-
-	
 	
 	@Override
 	public String toString() {
@@ -91,6 +90,13 @@ public class Patient {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	public boolean isBim() {
+		return isBim;
+	}
+
+	public void setBim(boolean isBim) {
+		this.isBim = isBim;
+	}
 	
 }

@@ -17,6 +17,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -48,7 +49,8 @@ public class OptionPatientManagementController extends ViewController {
 	private Label codePostal;
 	@FXML
 	private Label numero;
-	
+	@FXML
+	private CheckBox bim ; 
 
 	private List<Patient> patientList = new ArrayList<Patient>();
 	private ObservableList<Patient> obsPatientList;
@@ -64,27 +66,9 @@ public class OptionPatientManagementController extends ViewController {
 		nameColumn.setCellValueFactory(n -> new SimpleStringProperty(n.getValue().getLastName()));
 		firstnameColumn.setCellValueFactory(n -> new SimpleStringProperty(n.getValue().getFirstName()));
 		patientTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {showPatientDetails(newValue);});
-		
-		
 	}
 	
 	private void showPatientDetails(Patient patient) {
-//		String birth = "";
-//		String ageStr = ""; 
-//		if (patient.getBirthdate() == null)
-//		{
-//			birth ="01-01-0001";
-//			ageStr = "0 ans";
-//		}
-//		else {
-//			birth = patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
-//			
-//			if(patient.getBirthdate().plusYears(LocalDate.now().getYear()-patient.getBirthdate().getYear()).isAfter(LocalDate.now()))
-//				ageStr = String.valueOf(LocalDate.now().getYear()-patient.getBirthdate().getYear()-1) + " ans";
-//			else
-//				ageStr = String.valueOf(LocalDate.now().getYear()-patient.getBirthdate().getYear()) + " ans";
-//			
-//		}
 		prenom.setText(patient.getFirstName()); 
 		nom.setText(patient.getLastName()); 
 		id.setText(String.valueOf(patient.patientId)); 
@@ -94,7 +78,7 @@ public class OptionPatientManagementController extends ViewController {
 		ville.setText(patient.getAdresse().getCity()); 
 		codePostal.setText(String.valueOf(patient.getAdresse().getPostalCode())); 
 		pays.setText(patient.getAdresse().getCountry()); 
-		 
+		bim.setSelected(patient.isBim());
 	}
 
 	@FXML
@@ -110,9 +94,6 @@ public class OptionPatientManagementController extends ViewController {
 	private void openPatientDialog(Patient patient) {
 		pane.getCacheData().setSelectedPatient(patient);
 		PatientDataDialogPane dataDialogPane = new PatientDataDialogPane(pane);
-		
-		//newPane.showPane();
-				
 	}
 
 	@FXML

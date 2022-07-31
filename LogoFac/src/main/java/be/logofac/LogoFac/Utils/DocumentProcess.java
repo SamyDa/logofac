@@ -63,8 +63,10 @@ public class DocumentProcess {
 	    }
 	    
 	    
+	    if(!dest.endsWith("\\"))
+	    	dest = dest.concat("\\");
+	    dest = dest +  getFileName(facture) ;    
 	    
-	    dest = dest +  getFileName(facture) ;     
 	    System.out.println("destination = " + dest);
 		try {
 			  PdfWriter writer = new PdfWriter(dest);
@@ -192,21 +194,25 @@ public class DocumentProcess {
 	private void addSeanceAndAmounts(Table table, Facture facture) {
 		
 		List<Seance> seanceList =  facture.getSeances().stream().filter(n-> !n.getIsCancelled()).collect(Collectors.toList()) ;
-		total = AddCommonSeancesAndGetTotal( table,  facture) ;
-		total = total + AddCommonSeancesAndGetTotal(table,  facture);
+		AddCommonSeancesAndAddTotal(table,  facture);
 		
 		table.addCell(getCell("\n" , TextAlignment.LEFT));
 		table.addCell(getCell("\n" , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
 	}
 
-	private double AddCommonSeancesAndGetTotal(Table table, List<Seance> seanceList) {
+	private double AddCommonSeancesAndAddTotal(Table table, Facture facture) {
 		String text = "";
 		for(SeanceDuration seanceDuration : SeanceDuration.values()) {
 			
 			List<Seance> filteredSeances = facture.getSeances().stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
 			text = "";
+			if(filteredSeances.size() == 0 )
+				continue;
+			
 			for(SeanceType seanceType :  SeanceType.values()) {
 				List<Seance> secondFilteredSeances = filteredSeances.stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
+				if (secondFilteredSeances.size() == 0)
+					continue;
 				text = "";
 				if(secondFilteredSeances.size() > 0 ) {
 					if(secondFilteredSeances.size() == 1) {
@@ -252,9 +258,19 @@ public class DocumentProcess {
 				break;
 			}
 		}
-		table.addCell(getCell(new Paragraph().add( new Text("\n" + Description.Honoraires.getDescription(moisFacture) + "\n")).setUnderline(),  TextAlignment.LEFT,3));
+		
+		String textBilan = getTextBilan(facture);
+		
+		table.addCell(getCell(new Paragraph().add( new Text("\n" + Description.Honoraires.getDescription("Honoraires ".concat( textBilan), moisFacture) + "\n")).setUnderline(),  TextAlignment.LEFT,3));
 		table.addCell(getCell(" " , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
 		
+	}
+
+	private String getTextBilan( Facture facture) {
+			if(facture.isBilan())
+				return "pour le bilan initial"; 
+			
+			return "";
 	}
 
 	private String listSeanceDateText(List<Seance> seanceList) {

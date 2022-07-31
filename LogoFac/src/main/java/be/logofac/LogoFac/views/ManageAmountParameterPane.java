@@ -7,15 +7,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class ManageParametersPane extends NavigationPane {
+public class ManageAmountParameterPane extends NavigationPane {
 
-	public ManageParametersPane(NavigationPane parentPane) {
+	public ManageAmountParameterPane(NavigationPane parentPane) {
 		super(parentPane);
-	}	
+		// TODO Auto-generated constructor stub
+	}
+
 	
-	public ManageParametersPane() {
+	
+	public ManageAmountParameterPane() {
 		super(null);
 	}
+
 
 
 	@Override
@@ -23,7 +27,7 @@ public class ManageParametersPane extends NavigationPane {
 		 // then display the first main menu
 		 try {
 			    FXMLLoader fxmlLoader = new FXMLLoader();
-			 	fxmlLoader.setLocation(this.getClass().getResource("/views/OptionParametersManagement.fxml"));
+			 	fxmlLoader.setLocation(this.getClass().getResource("/views/OptionAmountManagement.fxml"));
 	            AnchorPane proDataMgt = (AnchorPane) fxmlLoader.load();
 	            rootLayout.setCenter(proDataMgt);
 	            ViewController controller = fxmlLoader.getController();

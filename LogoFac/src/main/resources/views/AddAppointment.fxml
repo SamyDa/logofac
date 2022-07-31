@@ -26,5 +26,6 @@
       <ComboBox fx:id="seanceType" layoutX="336.0" layoutY="70.0" prefHeight="25.0" prefWidth="124.0" />
       <CheckBox fx:id="cancellation" layoutX="41.0" layoutY="119.0" mnemonicParsing="false" text="Annulation" />
       <CheckBox fx:id="thirdPartyPayment" layoutX="41.0" layoutY="153.0" mnemonicParsing="false" text="Tier payant" />
+      <CheckBox fx:id="bim" layoutX="181.0" layoutY="121.0" mnemonicParsing="false" text="Bim" />
    </children>
 </AnchorPane>

@@ -17,7 +17,7 @@ import be.logofac.LogoFac.domain.enums.ParameterType;
 public abstract class AppParameter {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected int paramId;
+	protected int paramId; 
 	protected ParameterType paramType;
 	public ParameterType getParamType() {
 		return paramType;

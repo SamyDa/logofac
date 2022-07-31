@@ -58,11 +58,11 @@ public class InitialLoad {
 	public void initialLoad() {
 		fillParameterTable();
 		fillPrice();
-	//	fillProfessionnal();
-	//	fillPatient();
+		fillProfessionnal();
+		fillPatient();
 		
-	//	fillSeance();
-	//	fillFacture();
+		fillSeance();
+		fillFacture();
 	}
 	
 	private void fillParameter() {
@@ -141,9 +141,9 @@ public class InitialLoad {
 	
 	private void fillPatient() {
 		Adresse adresse = new Adresse("patient adresse", "Patient Service ", "11", 1000, "Patient Land");
-		Patient patient = new Patient("Pat", "ient", LocalDate.of(1992, 05, 14), "samy.Daou@hotmail.com",adresse);
+		Patient patient = new Patient("Pat", "ient", LocalDate.of(1992, 05, 14), "samy.Daou@hotmail.com",adresse, false);
 		patientService.save(patient);
-		patient = new Patient("Patout", "rien",LocalDate.of(1993, 8, 12), "marchovnikov@gmail.com", adresse);
+		patient = new Patient("Patout", "rien",LocalDate.of(1993, 8, 12), "marchovnikov@gmail.com", adresse, false);
 		patientService.save(patient);
 		patientService.findAll().forEach(n -> System.out.println(n.toString()) );
 		
