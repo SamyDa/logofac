@@ -88,13 +88,10 @@ public class SelectAppointmentToPrintController extends ViewController {
             public ObservableValue<Boolean> call(CellDataFeatures<Seance, Boolean> param) {
                 Seance seance = param.getValue();
  
-                if(seance.isToPrint() == null) {
-                	seance.setToPrint(!FrontApp.serviceCatalog.getFactureService().isSeanceInvoiced(seance));
-                }
                 
+                seance.setToPrint(!FrontApp.serviceCatalog.getFactureService().isSeanceInvoiced(seance));
+                               
                 SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(seance.isToPrint());
- 
-                
  
                 // When "printed" column change.
                 booleanProp.addListener(new ChangeListener<Boolean>() {
@@ -123,7 +120,7 @@ public class SelectAppointmentToPrintController extends ViewController {
 	private void fillYearList() {
 		
 		List<Integer> yearList = new ArrayList<Integer>();
-		int year = LocalDate.now().getYear();
+		int year = LocalDate.now().getYear()+1;
 		
 		for(int i = 0 ; i<5; i++) {
 			yearList.add(Integer.valueOf(year-i));
@@ -174,6 +171,7 @@ public class SelectAppointmentToPrintController extends ViewController {
 			docProcess.setSendEmail(sendEmail.isSelected());
 			Facture facture = createFacture(selectedSeances);
 			docProcess.loadDocumentData(facture);
+			facture.getSeances().forEach(seance -> seance.setToPrint(false));
 			facture.setPrinted(true);
 			FrontApp.serviceCatalog.getFactureService().save(facture);
 		}

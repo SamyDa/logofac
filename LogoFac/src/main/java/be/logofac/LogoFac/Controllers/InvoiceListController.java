@@ -96,6 +96,7 @@ public class InvoiceListController extends ViewController {
 		if(selectedInvoice == null) return ;
 		FrontApp.serviceCatalog.getFactureService().fetchLazyAttributes(selectedInvoice);
 		doc.loadDocumentData(selectedInvoice);
+		pane.returnBack();
 	}
 	
 }

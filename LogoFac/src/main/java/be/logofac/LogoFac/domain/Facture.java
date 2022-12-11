@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -74,7 +75,7 @@ public class Facture {
 	}
 	
 	public boolean isBilan(){
-		return seances.stream().filter(seance ->  Arrays.asList(SeanceType.Bilan_Cabinet , SeanceType.Bilan_Domicile).contains(seance.getSeanceType())).toList().size()>0;
+		return seances.stream().filter(seance ->  Arrays.asList(SeanceType.Bilan_Cabinet , SeanceType.Bilan_Domicile).contains(seance.getSeanceType())).collect(Collectors.toList()).size()>0;
 	}
 
 	public int getFactureId() {

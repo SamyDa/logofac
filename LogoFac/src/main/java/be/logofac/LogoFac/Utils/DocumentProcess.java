@@ -1,4 +1,4 @@
-package be.logofac.LogoFac.Utils;
+	package be.logofac.LogoFac.Utils;
 
 import java.io.FileNotFoundException;
 import java.time.format.DateTimeFormatter;
@@ -192,20 +192,22 @@ public class DocumentProcess {
 	}
 
 	private void addSeanceAndAmounts(Table table, Facture facture) {
-		
-		List<Seance> seanceList =  facture.getSeances().stream().filter(n-> !n.getIsCancelled()).collect(Collectors.toList()) ;
-		AddCommonSeancesAndAddTotal(table,  facture);
-		
+		List<Seance> normalSeanceList = facture.getSeances().stream().filter(seance -> !seance.getIsCancelled()).collect(Collectors.toList());
+		addSeancesAndAddTotalToTable(table,  normalSeanceList);
+		List<Seance> cancelledSeanceList = facture.getSeances().stream().filter(seance -> seance.getIsCancelled()).collect(Collectors.toList());
+		addSeancesAndAddTotalToTable(table,  cancelledSeanceList);
 		table.addCell(getCell("\n" , TextAlignment.LEFT));
 		table.addCell(getCell("\n" , TextAlignment.LEFT).setBorderLeft(new SolidBorder(1)));
 	}
 
-	private double AddCommonSeancesAndAddTotal(Table table, Facture facture) {
+	
+	private void addSeancesAndAddTotalToTable(Table table, List<Seance>  seanceList) {
 		String text = "";
+		boolean isCancelled = seanceList.stream().filter(seance -> seance.getIsCancelled()).collect(Collectors.toList()).size() > 0;
 		for(SeanceDuration seanceDuration : SeanceDuration.values()) {
 			
-			List<Seance> filteredSeances = facture.getSeances().stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
-			text = "";
+			List<Seance> filteredSeances = seanceList.stream().filter(n-> n.getHourNumber() == seanceDuration).collect(Collectors.toList()) ;
+	
 			if(filteredSeances.size() == 0 )
 				continue;
 			
@@ -213,19 +215,20 @@ public class DocumentProcess {
 				List<Seance> secondFilteredSeances = filteredSeances.stream().filter(n-> n.getSeanceType()== seanceType).collect(Collectors.toList()) ;
 				if (secondFilteredSeances.size() == 0)
 					continue;
-				text = "";
+				
 				if(secondFilteredSeances.size() > 0 ) {
+					text="";
 					if(secondFilteredSeances.size() == 1) {
 						String duration = "";
 						if (seanceDuration.getDescrption().toLowerCase().toCharArray()[0] == 'u') 
-							duration = "d'" + seanceDuration.getDescrption();
+							duration = "d'" + seanceDuration.getDescrption(isCancelled , false);
 						else
-							duration = "de " + seanceDuration.getDescrption();
+							duration = "de " + seanceDuration.getDescrption(isCancelled , false);
 						text = 	text + "1 séance " + duration + " " + seanceType.getSeanceString() + "\n" ;
 					}
 					else
 					{
-						text = text + secondFilteredSeances.size() + " séances " + seanceDuration.getDescrption() + " " + seanceType.getSeanceString() + "\n";
+						text = text + secondFilteredSeances.size() + " séances d'" + seanceDuration.getDescrption(isCancelled , true) + " " + seanceType.getSeanceString() + "\n";
 					}
 					
 					text = text + listSeanceDateText(secondFilteredSeances);
@@ -236,15 +239,16 @@ public class DocumentProcess {
 					AppParameterAmount retrievedParameterAmount =(AppParameterAmount) (new ParamRetriever()).retrieveParameter(appParameterAmount);
 					text = "";
 					if(retrievedParameterAmount != null) {
-						double localTotal = (double )secondFilteredSeances.size() * retrievedParameterAmount.getAmount();
+						int numberOfSeances = secondFilteredSeances.size();
+						int numberOfCancelledSeances = secondFilteredSeances.stream().filter(seance -> seance.getIsCancelled()).collect(Collectors.toList()).size();
+						double localTotal = (double )(numberOfSeances - numberOfCancelledSeances) * retrievedParameterAmount.getAmount() + (double)(numberOfCancelledSeances) * 0.5 * retrievedParameterAmount.getAmount();
 						total = total + ((double) Math.round(localTotal*100))/100;
-						text = text + secondFilteredSeances.size() + "x" + retrievedParameterAmount.getAmount() +" = "  +((double) Math.round(localTotal*100))/100 + "€";
+						text = text + secondFilteredSeances.size() + " x " + retrievedParameterAmount.getAmount() + (isCancelled?" x 50%":"")+" = "  +((double) Math.round(localTotal*100))/100 + "€";
 						table.addCell(getCell("\n" + text, TextAlignment.LEFT,3).setBorderLeft(new SolidBorder(1)));
 					}
 				}
 			}
 		}
-		return 0;
 	}
 
 	private void addTableFirstCell(Table table, Facture facture) {

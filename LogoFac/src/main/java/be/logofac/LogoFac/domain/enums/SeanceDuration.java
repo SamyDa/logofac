@@ -15,6 +15,11 @@ public enum SeanceDuration {
 	public String getDescrption() {
 		return descrption;
 	}
+	
+	public String getDescrption(boolean isCancelled, boolean isPlural) {
+		return isCancelled ? descrption + " annulée"+(isPlural?"s":"")+ " (50% du tarif)" : descrption;
+		
+	}
 
 	public double getDuration() {
 		return duration;

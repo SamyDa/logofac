@@ -41,10 +41,7 @@ public class FactureService {
 	}
 	
 	public boolean isSeanceInvoiced(Seance seance) {
-		if(factureRepository.countSeance(seance.getSeanceId()) > 0)
-			return true;
-		else
-			return false;
+		return factureRepository.countSeance(seance.getSeanceId()) > 0;
 	}
 	
 	public void fetchLazyAttributes(Facture facture) {

@@ -1,4 +1,5 @@
 package be.logofac.LogoFac.domain;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ public class Seance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int seanceId;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_patient")
 	private Patient patient;
@@ -26,17 +27,16 @@ public class Seance {
 	private Professionnel professionnel;
 
 	private LocalDateTime hourFrom;
-	
+
 	private SeanceDuration hourNumber;
 	private SeanceType seanceType;
-	
-	private Boolean toPrint = false;
-	
-	private Boolean isThirdPartyPayment; 
-	private Boolean isCancelled;
-	private Boolean isBim ; 
 
-	
+	private Boolean toPrint;
+
+	private Boolean isThirdPartyPayment;
+	private Boolean isCancelled;
+	private Boolean isBim;
+
 	public Seance() {
 		super();
 	}
@@ -51,92 +51,76 @@ public class Seance {
 		this.seanceType = seanceType;
 		this.isThirdPartyPayment = isThirdPartyPayment;
 		this.isCancelled = isCancelled;
+		this.toPrint = true;
 	}
 
 	@Override
 	public String toString() {
 		return "Seance [seanceId=" + seanceId + ", patient=" + patient + ", professionnel=" + professionnel
 				+ ", hourFrom=" + hourFrom + ", hourNumber=" + hourNumber + "]";
-		
+
 	}
 
 	public Boolean getIsThirdPartyPayment() {
 		return isThirdPartyPayment;
 	}
 
-
 	public void setIsThirdPartyPayment(Boolean isThirdPartyPayment) {
 		this.isThirdPartyPayment = isThirdPartyPayment;
 	}
-
 
 	public Boolean getIsCancelled() {
 		return isCancelled;
 	}
 
-
 	public void setIsCancelled(Boolean isCancelled) {
 		this.isCancelled = isCancelled;
 	}
-
 
 	public int getSeanceId() {
 		return seanceId;
 	}
 
-
 	public void setSeanceId(int seanceId) {
 		this.seanceId = seanceId;
 	}
-
-
 
 	public Patient getPatient() {
 		return patient;
 	}
 
-
-
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-
-
 
 	public LocalDateTime getHourFrom() {
 		return hourFrom;
 	}
 
-
-
 	public void setHourFrom(LocalDateTime hourFrom) {
 		this.hourFrom = hourFrom;
 	}
-
 
 	public SeanceDuration getHourNumber() {
 		return hourNumber;
 	}
 
-
 	public void setHourNumber(SeanceDuration hourNumber) {
 		this.hourNumber = hourNumber;
 	}
 
-
 	public Professionnel getProfessionnel() {
 		return professionnel;
 	}
-
 
 	public void setProfessionnel(Professionnel professionnel) {
 		this.professionnel = professionnel;
 	}
 
 	public SeanceType getSeanceType() {
-		if(isBim)
+		if (isBim)
 			return seanceType.getBimEquivalent();
-		
+
 		return seanceType;
 	}
 
@@ -144,16 +128,14 @@ public class Seance {
 		this.seanceType = seanceType;
 	}
 
-
 	public Boolean isToPrint() {
-		
+
 		return toPrint;
 	}
 
-
 	public void setToPrint(boolean seanceInvoiced) {
 		toPrint = seanceInvoiced;
-		
+
 	}
 
 	public Boolean getIsBim() {
@@ -162,7 +144,6 @@ public class Seance {
 
 	public void setIsBim(Boolean isBim) {
 		this.isBim = isBim;
-	} 
-	
-	
+	}
+
 }
